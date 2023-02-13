@@ -1,0 +1,25 @@
+.image{
+    width: 4em;
+    height: 3em;
+    object-fit: cover;
+    border-radius: 1em;
+    box-shadow: 0 4px 2px -2px gray;
+}
+
+.card{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    cursor:pointer;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    border-radius: 1em;
+    box-shadow: 0 4px 2px -2px gray;
+    background-color: #fff;
+    transition: all 0.2s ease-in-out;
+    &:hover{
+        transform: scale(1.05);
+        box-shadow: 0 4px 2px -2px gray;
+    }
+}

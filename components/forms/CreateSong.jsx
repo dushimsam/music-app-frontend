@@ -42,7 +42,6 @@ const SongFormInput = ({
   const [valid, setValid] = useState({
     title: !!status,
     length: !!status,
-    genre_id: !!status,
     album_id: !!status,
   });
 
@@ -53,6 +52,7 @@ const SongFormInput = ({
   const handleChangeV2 =
     (prop) =>
     ({ value, valid: validProp }) => {
+      console.log(valid)
       setValues({ ...values, [prop]: value });
       setValid((state) => ({ ...state, [prop]: validProp }));
     };
@@ -87,7 +87,6 @@ const SongFormInput = ({
                 label="Album"
                 handleChangeV2={handleChangeV2("album_id")}
                 value={values.album_id}
-                validations="required|string"
               >
                 <option value="">Select Album</option>
                 {albums.map((item) => (
@@ -107,7 +106,6 @@ const SongFormInput = ({
                 label="Genre"
                 handleChangeV2={handleChangeV2("genre_id")}
                 value={values.genre_id}
-                validations="required|string"
               >
                 <option value="">Select Genre</option>
                 {genres.map((item) => (

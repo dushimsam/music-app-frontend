@@ -2,6 +2,7 @@ import { useState } from "react";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import { SongService } from "../../services";
+import { notifyError, notifySuccess } from "../../utils/alerts";
 import SongFormInput from "../forms/CreateSong";
 
 const styles = {
@@ -19,10 +20,10 @@ const styles = {
 
 
 const GenreCoverPage = ({ item }) => {
+
   const [values, setValues] = useState({
     title: "",
     length: 1,
-    genre_id: item._id,
     album_id:"",
   });
 
@@ -31,8 +32,13 @@ const GenreCoverPage = ({ item }) => {
 
   const Create = async () => {
     try {
+      let details = {...values}
+      details.genre_id = item.id;
+      details.album_id = parseInt(values.album_id)
+      details.length = parseInt(values.length)
+      
       setLoading(true);
-      const res = await SongService.create(values);
+      const res = await SongService.create(details);
       notifySuccess(res.data.message);
     } catch (e) {
       notifyError(e.response?.data?.message);

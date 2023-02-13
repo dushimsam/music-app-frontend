@@ -7,8 +7,6 @@ import { GenreService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import Router from "next/router";
 
-
-
 const GenreSection = () => {
   const [values, setValues] = useState({
     type: "",
@@ -29,19 +27,24 @@ const GenreSection = () => {
   };
 
   const [genres, setGenres] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
 
   const fetchGenres = async () => {
     try {
-      const res = await GenreService.get_all();
-      let muted_res = [];
-      for(let i = 0; i < res.data.length; i++){
-        if(i == 2){
-            muted_res.push({id: "new", type: "", created_at:"", updated_at:""});
-        }
-        muted_res.push(res.data[i]);
+      const res = await GenreService.get_all(currPage);
+      let muted_res = res.data.data;
+
+      if (currPage === 1) {
+        let item = {
+          id: "new",
+          type: "",
+          created_at: "",
+          updated_at: "",
+        };
+
+        muted_res.splice(0, 0, item);
       }
-        
-      setGenres(muted_res);
+      setGenres([...genres, ...muted_res]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     }
@@ -49,7 +52,7 @@ const GenreSection = () => {
 
   useEffect(() => {
     fetchGenres();
-  }, []);
+  }, [currPage]);
 
   return (
     <div className="container">
@@ -105,7 +108,10 @@ const GenreSection = () => {
             <div className="col-4 my-2" key={index}>
               <div className={`${Styles.card} py-2`}>
                 <span className="mr-5">{card.type}</span>
-                <button className={`btn p-3  ${Styles.cardBtn}`} onClick={() =>Router.push("genre/"+card.id) }>
+                <button
+                  className={`btn p-3  ${Styles.cardBtn}`}
+                  onClick={() => Router.push("genre/" + card.id)}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -127,7 +133,11 @@ const GenreSection = () => {
       <div className="row justify-content-center">
         <div className="col-3">
           <div className={` py-3 ${Styles.viewMore}`}>
-            <p className="font-weight-bold">
+            <p
+              className="font-weight-bold"
+              on
+              onClick={() => setCurrPage(currPage + 1)}
+            >
               View more
               <svg
                 xmlns="http://www.w3.org/2000/svg"

@@ -3,8 +3,8 @@ import { HttpCommon as http } from "./http";
 
 class GenreService extends Services {
 
-    get_all() {
-        return http.get(`/${this.genrePath}`);
+    get_all(page = 1) {
+        return http.get(`/${this.genrePath}?page=${page}`);
     }
 
     get_by_id(genre){

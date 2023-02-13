@@ -2,18 +2,12 @@ import Styles from "../../styles/components/GenreCard.module.scss";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import GenreFormInput from "../forms/CreateGenre";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GenreService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
+import Router from "next/router";
 
-let CARDS_DETAILS = [
-  { image: "/test/image1.jpeg", title: "1", status: "" },
-  { image: "/test/image2.jpg", title: "2", status: "" },
-  { image: "/test/image4.jpeg", title: "", status: "new" },
-  { image: "/test/image3.jpg", title: "3", status: "" },
-  { image: "/test/image4.jpeg", title: "4", status: "" },
-  { image: "/test/image4.jpeg", title: "4", status: "" },
-];
+
 
 const GenreSection = () => {
   const [values, setValues] = useState({
@@ -34,6 +28,29 @@ const GenreSection = () => {
     }
   };
 
+  const [genres, setGenres] = useState([]);
+
+  const fetchGenres = async () => {
+    try {
+      const res = await GenreService.get_all();
+      let muted_res = [];
+      for(let i = 0; i < res.data.length; i++){
+        if(i == 2){
+            muted_res.push({id: "new", type: "", created_at:"", updated_at:""});
+        }
+        muted_res.push(res.data[i]);
+      }
+        
+      setGenres(muted_res);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchGenres();
+  }, []);
+
   return (
     <div className="container">
       <div className="row justify-content-start">
@@ -42,8 +59,8 @@ const GenreSection = () => {
         </div>
       </div>
       <div className="row justify-content-start">
-        {CARDS_DETAILS.map((card, index) =>
-          card.status == "new" ? (
+        {genres.map((card, index) =>
+          card.id == "new" ? (
             <div className="col-2">
               <Popup
                 trigger={
@@ -87,8 +104,8 @@ const GenreSection = () => {
           ) : (
             <div className="col-4 my-2" key={index}>
               <div className={`${Styles.card} py-2`}>
-                <span className="mr-5">title</span>
-                <button className={`btn p-3  ${Styles.cardBtn}`}>
+                <span className="mr-5">{card.type}</span>
+                <button className={`btn p-3  ${Styles.cardBtn}`} onClick={() =>Router.push("genre/"+card.id) }>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

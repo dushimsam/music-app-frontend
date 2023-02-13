@@ -2,30 +2,29 @@ import { Services } from "./services";
 import { HttpCommon as http } from "./http";
 
 class SongService extends Services {
-    path = "song";
 
     get_all() {
-        return http.get(`/${this.path}`);
+        return http.get(`/${this.songPath}`);
     }
 
     get_all_paginated(page=1) {
-        return http.get(`/${this.path}?page=${page}`);
+        return http.get(`/${this.songPath}?page=${page}`);
     }
 
     create(data) {
-        return http.post(`/${this.path}`, data);
+        return http.post(`/${this.songPath}`, data);
     }
 
     get_by_id(song) {
-            return http.get(`/${this.path}/${song}`);
+            return http.get(`/${this.songPath}/${song}`);
     }
 
     update(song, data) {
-        return http.put(`/${this.path}/${song}`, data);
+        return http.put(`/${this.songPath}/${song}`, data);
     }
 
     delete(song) {
-        return http.delete(`/${this.path}/${song}`);
+        return http.delete(`/${this.songPath}/${song}`);
     }
 
 }

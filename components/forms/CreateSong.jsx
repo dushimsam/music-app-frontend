@@ -1,83 +1,125 @@
 import Styles from "../../styles/components/Forms.module.scss";
 import SelectControl from "../../components/widgets/SelectControl";
+import { useEffect, useState } from "react";
+import InputControl from "../Reusable/InputControl";
+import { isThisFormValid } from "../../utils/functions";
+import { notifyError, notifySuccess } from "../../utils/alerts";
+import { AlbumService, GenreService } from "../../services";
 
-const SongFormInput = ({ status, item }) => {
-  const albums = [
-    { _id: 1, name: "album1" },
-    { _id: 2, name: "album2" },
-  ];
+const SongFormInput = ({
+  setIsFormValid,
+  setValues,
+  status,
+  values,
+  addTo,
+}) => {
+  const [albums, setAlbums] = useState([]);
+  const [genres, setGenres] = useState([]);
 
-  const genres =[
-    { _id: 1, name: "genre1" },
-    { _id: 2, name: "genre2" },
-
-  ]
-  const values = {
-    title: "",
-    length: "",
-    album_id: "",
-    genre_id: "",
+  const fetchAlbums = async () => {
+    try {
+      const res = await AlbumService.get_all();
+      setAlbums(res.data);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
   };
 
-  const handleChange = (val) => {};
+  const fetchGenres = async () => {
+    try {
+      const res = await GenreService.get_all();
+      setGenres(res.data);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchAlbums();
+    fetchGenres();
+  }, []);
+
+  const [valid, setValid] = useState({
+    title: !!status,
+    length: !!status,
+    genre_id: !!status,
+    album_id: !!status,
+  });
+
+  useEffect(() => {
+    setIsFormValid(isThisFormValid(valid));
+  }, [valid]);
+
+  const handleChangeV2 =
+    (prop) =>
+    ({ value, valid: validProp }) => {
+      setValues({ ...values, [prop]: value });
+      setValid((state) => ({ ...state, [prop]: validProp }));
+    };
+
   return (
     <div className="container">
-      <div className="row">
-        <div className="col-12 col-md-6 mt-2">
+      <div className="row justify-content-center">
+        <div className="col-11 mt-2">
           <div className="form-group">
-            <label htmlFor="title" style={Styles.label}>
-              Title
-            </label>
-            <input
-              className="form-control"
-              id="title"
-              onChange={handleChange("title")}
+            <InputControl
+              handleChangeV2={handleChangeV2("title")}
               value={values.title}
+              label="Title"
+              type="text"
+              validations="required|string|min:3"
             />
           </div>
           <div className="form-group">
-            <label htmlFor="length" className="mt-3">
-              Length
-            </label>
-            <input
-              className="form-control"
-              id="length"
+            <InputControl
+              handleChangeV2={handleChangeV2("length")}
               value={values.length}
-              onChange={handleChange("length")}
+              label="Length"
+              type="number"
+              min={1}
+              validations="required|integer"
             />
           </div>
 
-          <div className="form-group">
-          <SelectControl
-              label="Album"
-              handleChangeV2={handleChange("album_id")}
-              value={values.album_id}
-              validations="required|string"
-            >
-              <option value="">Select Genre</option>
-              {albums.map((item) => (
-                <option value={item.id} key={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </SelectControl>
-          </div>
+          {addTo === "genre" || addTo === "all" ? (
+            <div className="form-group">
+              <SelectControl
+                label="Album"
+                handleChangeV2={handleChangeV2("album_id")}
+                value={values.album_id}
+                validations="required|string"
+              >
+                <option value="">Select Album</option>
+                {albums.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.title}
+                  </option>
+                ))}
+              </SelectControl>
+            </div>
+          ) : (
+            <></>
+          )}
 
-          <div className="form-group">
-            <SelectControl
-              label="Genre"
-              handleChangeV2={handleChange("genre_id")}
-              value={values.genre_id}
-              validations="required|string"
-            >
-              <option value="">Select Genre</option>
-              {genres.map((item) => (
-                <option value={item._id} key={item._id}>
-                  {item.name}
-                </option>
-              ))}
-            </SelectControl>
-          </div>
+          {addTo === "album" || addTo === "all" ? (
+            <div className="form-group">
+              <SelectControl
+                label="Genre"
+                handleChangeV2={handleChangeV2("genre_id")}
+                value={values.genre_id}
+                validations="required|string"
+              >
+                <option value="">Select Genre</option>
+                {genres.map((item) => (
+                  <option value={item.id} key={item.id}>
+                    {item.type}
+                  </option>
+                ))}
+              </SelectControl>
+            </div>
+          ) : (
+            <></>
+          )}
         </div>
       </div>
     </div>

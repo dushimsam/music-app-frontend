@@ -23,7 +23,7 @@ export default function AdminNavbar({setShowSidebar, sidebarState}) {
         <div style={{height: 50}}
              className="shadow-sm d-flex justify-content-between align-items-center px-3 bg-white">
             <div className="d-flex align-items-center">
-                <div className="mr-4 cursor-pointer" onClick={() => setShowSidebar(!sidebarState)}>
+                <div className="mr-4 cursor-pointer" onClick={() => setShowSidebar(!sidebarState)} style={{cursor:"pointer"}}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

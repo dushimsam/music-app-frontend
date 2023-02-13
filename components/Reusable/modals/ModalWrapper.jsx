@@ -42,7 +42,6 @@ const ModalWrapper = ({
           <button
             className="btn btn-danger"
             onClick={() => {
-              console.log("modal closed ");
               close();
             }}
           >

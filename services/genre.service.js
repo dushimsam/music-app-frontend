@@ -8,7 +8,7 @@ class GenreService extends Services {
     }
 
     get_by_id(genre){
-        return http.get(`/${this.genrePath}}/${genre}`);
+        return http.get(`/${this.genrePath}/${genre}`);
     }
 
     create(data) {

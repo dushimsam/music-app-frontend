@@ -3,11 +3,8 @@ import Link from "next/link";
 
 import styles from "../styles/modules/app.module.scss";
 import {DEFAULT_VARIABLES, SYSTEM_USERS} from "../utils/constants"
-// import {Logo} from "./Logo";
 import {useRouter} from "next/router";
 import {AuthService} from "../services";
-// import NavBarNotifications from "./NavbarNotification";
-// import NotificationContext from "./NotificationContext";
 import Auth from "../middlewares/auth";
 
 export const Navbar = () => {
@@ -56,10 +53,7 @@ export const Navbar = () => {
                     <Link href={"/auth/login"}>Login</Link>
                     <Link href={"/auth/register"}>Register</Link>
                 </React.Fragment>) : (<div className="d-flex">
-                    <div className={"mr-5"}>
-                        {/* <NotificationContext on_nav_bar/> */}
-                        <p style={{fontSize: "0.85em"}}>Notifications</p>
-                    </div>
+                   
                     <div><img
                         src={profileUrl ? profileUrl : DEFAULT_VARIABLES.USER_PROFILE_PIC}
                         onError={({currentTarget}) => {

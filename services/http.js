@@ -1,7 +1,7 @@
 import axios from "axios";
 import {KEYS} from "../utils/constants";
 
-export const domain = "https://localhost:8000/";
+export const domain = "http://localhost:8000/";
 
 let token = "";
 
@@ -12,7 +12,6 @@ if (typeof window !== "undefined") {
 export const HttpCommon = axios.create({
     baseURL: `${domain}api`,
     headers: {
-        "Content-type": "application/json",
-        Authorization: "Bearer " + token,
+        "Content-type": "application/json"
     },
 });

@@ -1,34 +1,41 @@
+import { useEffect, useState } from "react";
 import Styles from "../../styles/components/Forms.module.scss";
+import InputControl from "../Reusable/InputControl"; 
+import { InputTextArea } from "../Reusable/InputControl";
+import { isThisFormValid } from "../../utils/functions";
+const AlbumFormInput = ({setIsFormValid,setValues,status,values}) => {
+    
+     const [valid, setValid] = useState({
+        title: !!status,
+        release_date: !!status,
+        description: !!status
+    });
 
+    
+    useEffect(() => {
+        setIsFormValid(isThisFormValid(valid))
+    }, [valid])
 
-const AlbumFormInput = () => {
-     const values = {
-        title: "",
-        release_date: "",
-        description: ""
-
-     }
-    const handleChange = (value) => {
-    }
+    const handleChangeV2 = (prop) => ({value, valid: validProp}) => {
+        setValues({...values, [prop]: value});
+        setValid(state => ({...state, [prop]: validProp}))
+    };
     return (
         <div className="container">
             <div className="row">
                 <div className="col-12 col-md-6 mt-2">
                     <div className="form-group">
-                        <label htmlFor="firstName" style={Styles.label}>Title</label>
-                        <input className="form-control" id="title" onChange={handleChange("title")}
-                               value={values.title}/>
+                        <InputControl handleChangeV2={handleChangeV2("title")} value={values.title} label="Title"
+                                  type="text" validations="required|string|min:3"/>
                     </div>
                     <div className="form-group">
-                        <label htmlFor="release_date" className="mt-3">Release Date</label>
-                        <input className="form-control" id="release_date" value={values.release_date}
-                               onChange={handleChange("release_date")}/>
+                    <InputControl handleChangeV2={handleChangeV2("release_date")} value={values.release_date} label="Release Date"
+                                  type="date" />
                     </div>
 
                     <div className="form-group">
-                        <label htmlFor="description" className="mt-3">Description</label>
-                        <textarea className="form-control" id="description" value={values.description}
-                               onChange={handleChange("description")}/>
+                    <InputTextArea handleChangeV2={handleChangeV2("description")} value={values.description} label="Description"
+                                  type="text" validations="required|string|min:3"/>
                     </div>
                     <div className="form-group">
                         <input type="file" id="myFile" name="filename" hidden={true}/>

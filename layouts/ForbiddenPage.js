@@ -8,15 +8,14 @@ import Auth from "../middlewares/auth";
 export const ForbiddenPage = ({children}) => {
     const authUser = useSelector(state => state.authUser)
 
-    useEffect(() => {
-        const isActive = Auth.isActive();
-        if (isActive) {
-            Router.back();
-        }
-    }, [authUser])
+    // useEffect(() => {
+    //     const isActive = Auth.isActive();
+    //     if (isActive) {
+    //         Router.back();
+    //     }
+    // }, [authUser])
 
     return (<>
-        <Navbar/>
         {children}
     </>)
 }

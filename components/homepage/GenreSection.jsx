@@ -1,4 +1,10 @@
 import Styles from "../../styles/components/GenreCard.module.scss";
+import Popup from "reactjs-popup";
+import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
+import GenreFormInput from "../forms/CreateGenre";
+import { useState } from "react";
+import { GenreService } from "../../services";
+import { notifyError, notifySuccess } from "../../utils/alerts";
 
 let CARDS_DETAILS = [
   { image: "/test/image1.jpeg", title: "1", status: "" },
@@ -10,6 +16,24 @@ let CARDS_DETAILS = [
 ];
 
 const GenreSection = () => {
+  const [values, setValues] = useState({
+    type: "",
+  });
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const Create = async () => {
+    try {
+      setLoading(true);
+      const res = await GenreService.create(values);
+      notifySuccess(res.data.message);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container">
       <div className="row justify-content-start">
@@ -21,20 +45,44 @@ const GenreSection = () => {
         {CARDS_DETAILS.map((card, index) =>
           card.status == "new" ? (
             <div className="col-2">
-              <div className={`${Styles.newGenreCard}`}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  width="24"
-                  height="24"
-                >
-                  <path fill="none" d="M0 0h24v24H0z" />
-                  <path
-                    d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
-                    fill="rgba(149,164,166,1)"
+              <Popup
+                trigger={
+                  <div className={`${Styles.newGenreCard}`}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      width="24"
+                      height="24"
+                    >
+                      <path fill="none" d="M0 0h24v24H0z" />
+                      <path
+                        d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
+                        fill="rgba(149,164,166,1)"
+                      />
+                    </svg>
+                  </div>
+                }
+                modal
+                nested
+              >
+                {(close) => (
+                  <ModalWrapper
+                    title={"Add New Genre"}
+                    loading={loading}
+                    close={close}
+                    disable={isFormValid}
+                    callFun={Create}
+                    btnActionText={"CREATE"}
+                    content={
+                      <GenreFormInput
+                        setIsFormValid={setIsFormValid}
+                        setValues={setValues}
+                        values={values}
+                      />
+                    }
                   />
-                </svg>
-              </div>
+                )}
+              </Popup>
             </div>
           ) : (
             <div className="col-4 my-2" key={index}>

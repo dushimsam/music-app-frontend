@@ -1,83 +1,87 @@
-// import styles from "../styles/components/CardDesc.module.scss";
-import AdminDashboard from "../layouts/Dashboard";
-import SongsSection from "../components/homepage/SongsSections";
+import Styles from "../styles/components/Forms.module.scss";
+import SelectControl from "../components/widgets/SelectControl";
 
-const styles = {
-  header: {
-    height: "350px",
-    width: "100%",
-    backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.8)),url(/images/soundtrack.jpg)`,
-    backgroundSize: "cover",
-  },
-  categories: {
-    marginTop: "-100px",
-  },
-};
+const SongFormInput = ({ status, item }) => {
+  const albums = [
+    { _id: 1, name: "album1" },
+    { _id: 2, name: "album2" },
+  ];
 
-const AlbumPage = () => {
+  const genres =[
+    { _id: 1, name: "genre1" },
+    { _id: 2, name: "genre2" },
+
+  ]
+  const values = {
+    title: "",
+    length: "",
+    album_id: "",
+    genre_id: "",
+  };
+
+  const handleChange = (val) => {};
   return (
-    <AdminDashboard isVerified={true}>
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-12 rounded" style={styles.header}>
-            <div className="container">
-              <div className="row justify-content-start">
-                <div className="col-5 pt-4">
-                  <h2 className="text-light font-weight-bold">{`Country music`}</h2>
-                  <p className="text-light">{`There are 100 songs under this category`}</p>
-                  <button className="btn-dark px-3 py-2 rounded">
-                    {" "}
-                    VIEW MORE{" "}
-                  </button>
-                </div>
-              </div>
-              <div className="row justify-content-between pt-5">
-                <div className="col-4">
-                  <button
-                    className="btn px-3 py-3 mr-2"
-                    style={{ backgroundColor: "#3643c7" }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="24"
-                      height="24"
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path
-                        d="M11 11V7h2v4h4v2h-4v4h-2v-4H7v-2h4zm1 11C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
-                        fill="rgba(255,255,255,1)"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    className="btn px-2 py-2"
-                    style={{ backgroundColor: "white" }}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      width="18"
-                      height="18"
-                    >
-                      <path fill="none" d="M0 0h24v24H0z" />
-                      <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm2 2v10h12V10H6zm3 2h2v6H9v-6zm4 0h2v6h-2v-6zM7 5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9z" />
-                    </svg>
-                  </button>
-                </div>
-                <div className="col-4"></div>
-              </div>
-            </div>
+    <div className="container">
+      <div className="row">
+        <div className="col-12 col-md-6 mt-2">
+          <div className="form-group">
+            <label htmlFor="title" style={Styles.label}>
+              Title
+            </label>
+            <input
+              className="form-control"
+              id="title"
+              onChange={handleChange("title")}
+              value={values.title}
+            />
           </div>
-        </div>
-        <div className="row justify-content-center">
-          <div className="col-12">
-            <SongsSection showTitle={false}/>
+          <div className="form-group">
+            <label htmlFor="length" className="mt-3">
+              Length
+            </label>
+            <input
+              className="form-control"
+              id="length"
+              value={values.length}
+              onChange={handleChange("length")}
+            />
+          </div>
+
+          <div className="form-group">
+          <SelectControl
+              label="Album"
+              handleChangeV2={handleChange("album_id")}
+              value={values.album_id}
+              validations="required|string"
+            >
+              <option value="">Select Genre</option>
+              {albums.map((item) => (
+                <option value={item.id} key={item.id}>
+                  {item.name}
+                </option>
+              ))}
+            </SelectControl>
+          </div>
+
+          <div className="form-group">
+            <SelectControl
+              label="Genre"
+              handleChangeV2={handleChange("genre_id")}
+              value={values.genre_id}
+              validations="required|string"
+            >
+              <option value="">Select Genre</option>
+              {genres.map((item) => (
+                <option value={item._id} key={item._id}>
+                  {item.name}
+                </option>
+              ))}
+            </SelectControl>
           </div>
         </div>
       </div>
-    </AdminDashboard>
+    </div>
   );
 };
 
-export default AlbumPage;
+export default SongFormInput;

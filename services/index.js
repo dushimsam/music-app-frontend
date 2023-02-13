@@ -1,4 +1,4 @@
-import AlubmService from "./album.service";
+import AlbumService from "./album.service";
 import AuthService from "./auth.service";
 import GenreService from "./genre.service";
 import SongService from "./song.service";
@@ -6,7 +6,7 @@ import UserService from "./user.service";
 
 
 export {
-    AlubmService,
+    AlbumService,
     AuthService,
     GenreService,
     SongService,

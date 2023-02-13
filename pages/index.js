@@ -63,8 +63,8 @@ export default function Login() {
                 }
             }
         } catch (e) {
-            if (e.response.status === 400) return setErrors({...initialErrors, ...e.response.data});
-            if (e.response.status === 404) notifyError(e.response.data.message);
+            if (e.response?.status === 400) return setErrors({...initialErrors, ...e.response.data});
+            if (e.response?.status === 404) notifyError(e.response.data.message);
         }
     };
 

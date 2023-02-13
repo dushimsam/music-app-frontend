@@ -39,10 +39,10 @@ function AppMeta() {
     const dispatch = useDispatch();
 
     const setUser = async () => {
-        if (Auth.isLoggedIn() && !Auth.tokenExpired()) {
-            let profile = await AuthService.profile();
-            dispatch(setAuthUser(profile));
-        }
+        // if (Auth.isLoggedIn() && !Auth.tokenExpired()) {
+        //     let profile = await AuthService.profile();
+        //     dispatch(setAuthUser(profile));
+        // }
     }
     return (<Head>
         <title>{APP_DETAILS.NAME}</title>

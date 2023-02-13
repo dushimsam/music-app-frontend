@@ -1,11 +1,10 @@
 // import styles from "../styles/components/CardDesc.module.scss";
 import AdminDashboard from '../../layouts/Dashboard';
-import GenreCoverPage from "../../components/Genre/GenreCoverPage";
 import SongsSection from '../../components/homepage/SongsSections';
 import AlbumCoverPage from '../../components/Album/AlbumCoverPage';
 
 
-const GenrePage = () =>{
+const AlbumPage = () =>{
   return(
     <AdminDashboard isVerified={true}>
     <div className="container-fluid">
@@ -25,4 +24,4 @@ const GenrePage = () =>{
 }
 
 
-export default GenrePage;
+export default AlbumPage;

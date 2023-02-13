@@ -2,30 +2,29 @@ import { Services } from "./services";
 import { HttpCommon as http } from "./http";
 
 class GenreService extends Services {
-    model = `genre`
 
     get_all() {
-        return http.get(`/${model}`);
+        return http.get(`/${this.genrePath}`);
     }
 
     get_by_id(genre){
-        return http.get(`/${model}/${genre}`);
+        return http.get(`/${this.genrePath}}/${genre}`);
     }
 
     create(data) {
-        return http.post(`/${model}/`,data);
+        return http.post(`/${this.genrePath}`,data);
     }
 
     update(genre,data) {
-        return http.post(`/${model}/${genre}`,data);
+        return http.post(`/${this.genrePath}/${genre}`,data);
     }
 
     delete(genre) {
-        return http.delete(`/${model}/${genre}`);
+        return http.delete(`/${this.genrePath}}/${genre}`);
     }
 
     get_songs(genre){
-        return http.get(`/${model}/${genre}/songs`);
+        return http.get(`/${this.genrePath}}/${genre}/songs`);
     }
 }
 

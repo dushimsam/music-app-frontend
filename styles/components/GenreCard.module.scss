@@ -1,0 +1,67 @@
+
+.card{
+    width: 100%;
+    height: 100%;
+    // background-color: #fff;
+    border-radius: 3em;
+    border: 1px solid #e9e1e1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover{
+        transform: scale(1.05);
+        border: 2px solid black;
+    }
+}
+
+
+.newGenreCard{
+    width: 100%;
+    height: 70%;
+    border: 2px dashed #e0e0e0;
+    border-radius: 3em;
+    padding: 1em;
+    margin: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    &:hover{
+        transform: scale(1.05);
+    }
+}
+
+.cardBtn{
+    border: 2px solid #000;
+    border-radius: 50%;
+    background-color: #000;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+
+.viewMore{
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #000;
+    font-size: 0.8em;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.5s ease-in-out;
+}

@@ -2,10 +2,11 @@ import React from "react";
 import AlubmCardStyles from "../../styles/components/AlbumCard.module.scss";
 
 let CARDS_DETAILS = [
-  { image: "/test/image1.jpeg", title: "1" },
-  { image: "/test/image2.jpg", title: "2" },
-  { image: "/test/image3.jpg", title: "3" },
-  { image: "/test/image4.jpeg", title: "4" },
+  { image: "/test/image1.jpeg", title: "1", status: "" },
+  { image: "/test/image2.jpg", title: "2", status: "" },
+  { image: "/test/image3.jpg", title: "3", status: "" },
+  { image: "/test/image4.jpeg", title: "4", status: "" },
+  { image: "/test/image4.jpeg", title: "", status: "new" },
 ];
 
 const Slideshow = () => {
@@ -18,21 +19,40 @@ const Slideshow = () => {
       </div>
       <div className="row justify-content-center">
         <div className="row">
-          {CARDS_DETAILS.map((card, index) => (
-            <div className="col-3" key={index}>
-              <div>
-                <img
-                  src={card.image}
-                  alt="album cover"
-                  className={`img-fluid bg-cover ${AlubmCardStyles.image}`}
-                />
-                <div className="card-body">
-                  <h6 className="card-title">Card title</h6>
-                  <p className="card-text"> 12th January 2011 </p>
+          {CARDS_DETAILS.map((card, index) =>
+            card.status == "new" ? (
+              <div className="col-2">
+                <div className={`${AlubmCardStyles.newAlbumCard}`}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    width="24"
+                    height="24"
+                  >
+                    <path fill="none" d="M0 0h24v24H0z" />
+                    <path
+                      d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z"
+                      fill="rgba(149,164,166,1)"
+                    />
+                  </svg>
                 </div>
               </div>
-            </div>
-          ))}
+            ) : (
+              <div className="col-2" key={index}>
+                <div>
+                  <img
+                    src={card.image}
+                    alt="album cover"
+                    className={`img-fluid bg-cover ${AlubmCardStyles.image}`}
+                  />
+                  <div className="card-body">
+                    <h6 className="card-title">Card title</h6>
+                    <p className="card-text"> 12th January 2011 </p>
+                  </div>
+                </div>
+              </div>
+            )
+          )}
         </div>
         <div className="col-3">
           <p>See more</p>

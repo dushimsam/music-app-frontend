@@ -9,6 +9,11 @@ class AlubmService extends Services {
   get_all_paginated(page = 1) {
     return http.get(`/${this.albumPath}/paginated?page=${page}`);
   }
+
+
+  get_songs_by_id_paginated(album, page = 1){
+    return http.get(`/${this.albumPath}/${album}/songs?page=${page}`);
+  }
   
   get_by_id(album) {
     return http.get(`/${this.albumPath}/${album}`);

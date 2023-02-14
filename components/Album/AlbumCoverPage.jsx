@@ -93,6 +93,8 @@ const AlbumCoverPage = ({item}) => {
   const handleUploadPicture = (files) => {
     setImgUrl(files[0]);
   };
+
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -101,7 +103,7 @@ const AlbumCoverPage = ({item}) => {
             <div className="row justify-content-start">
               <div className="col-3 pt-4">
                 <img
-                  src="/test/image2.jpg"
+                  src={item.cover_image_url}
                   alt="cover-image"
                   className="img-thumbnail"
                   style={styles.image}
@@ -111,8 +113,8 @@ const AlbumCoverPage = ({item}) => {
                 <h1
                   className="text-light font-weight-bold mt-5"
                   style={styles.title}
-                >{`Country music`}</h1>
-                <p className="text-light">{`There are 100 songs under this category`}</p>
+                >{`${item.title}`}</h1>
+                <p className="text-light">{`${item.description}`}</p>
                 <Popup
                   trigger={
                     <button className="btn-dark px-3 py-2 rounded">

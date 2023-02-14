@@ -28,17 +28,43 @@ const GenrePage = () => {
     id && getGenre();
   }, [id]);
 
+  // integration for songs list
+  const [songs, setSongs] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+  const [totalSongs, setTotalSongs] = useState(0);
+
+  const fetchSongs = async () => {
+    try {
+      const res = await GenreService.get_songs_by_id_paginated(id, currPage);
+      setSongs([...songs, ...res.data.data]);
+      setTotalSongs(res.data.total);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    id && fetchSongs();
+  }, [currPage, id]);
+
   return (
     <AdminDashboard isVerified={true}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <GenreCoverPage item={item}/>
+            <GenreCoverPage item={item} />
           </div>
         </div>
         <div className="row justify-content-center">
           <div className="col-10 pt-4">
-            <SongsSection showTitle={false} />
+            <SongsSection
+              showTitle={false}
+              status={"genre"}
+              currPage={currPage}
+              totalSongs={totalSongs}
+              setCurrPage={setCurrPage}
+              songs={songs}
+            />
           </div>
         </div>
       </div>

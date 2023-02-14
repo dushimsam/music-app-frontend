@@ -11,6 +11,10 @@ class GenreService extends Services {
         return http.get(`/${this.genrePath}/paginated?page=${page}`);
     }
 
+    get_songs_by_id_paginated(genre, page = 1){
+        return http.get(`/${this.genrePath}/${genre}/songs?page=${page}`);
+      }
+
     get_by_id(genre){
         return http.get(`/${this.genrePath}/${genre}`);
     }

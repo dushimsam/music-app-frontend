@@ -14,9 +14,11 @@
     justify-content: space-between;
     align-items: center;
     padding: 1em;
-    border-radius: 1em;
-    box-shadow: 0 4px 2px -2px gray;
-    background-color: #fff;
+    border: 0px;
+    border-bottom: 1px solid black;
+    border-radius: 0em;
+    // box-shadow: 0 4px 2px -2px gray;
+    // background-color: #fff;
     transition: all 0.2s ease-in-out;
     &:hover{
         transform: scale(1.05);

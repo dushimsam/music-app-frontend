@@ -3,6 +3,9 @@ import AdminDashboard from '../../layouts/Dashboard';
 import SongsSection from '../../components/homepage/SongsSections';
 import AlbumCoverPage from '../../components/Album/AlbumCoverPage';
 import { AlbumService } from '../../services';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { notifyError } from "../../utils/alerts";
 
 
 const AlbumPage = () =>{

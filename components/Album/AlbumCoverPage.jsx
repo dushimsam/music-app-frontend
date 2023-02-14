@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
-import { AlbumService } from "../../services";
-import { notifyError } from "../../utils/alerts";
+import { AlbumService, SongService } from "../../services";
+import { notifyError, notifySuccess } from "../../utils/alerts";
 import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
 
@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-const AlbumCoverPage = () => {
+const AlbumCoverPage = ({item}) => {
   const [values, setValues] = useState({
     title: "",
     length: 1,
@@ -39,12 +39,11 @@ const AlbumCoverPage = () => {
 
   const Create = async () => {
     try {
+      setLoading(true);
       let details = { ...values };
       details.album_id = item.id;
-      details.genre_id = parseInt(values.album_id);
+      details.genre_id = parseInt(values.genre_id);
       details.length = parseInt(values.length);
-
-      setLoading(true);
       const res = await SongService.create(details);
       notifySuccess(res.data.message);
     } catch (e) {
@@ -70,7 +69,7 @@ const AlbumCoverPage = () => {
       });
       setDefaultFile(res.data.cover_image_url);
     } catch (err) {
-      notifyError(e.response.message);
+      notifyError(err.response.message);
     }
   }, [item]);
 

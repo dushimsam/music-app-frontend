@@ -12,6 +12,7 @@ const AlbumFormInput = ({
   values,
   imgFile,
   handleUploadPicture,
+  defaultFile
 }) => {
   const [valid, setValid] = useState({
     title: !!status,

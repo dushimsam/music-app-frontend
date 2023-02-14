@@ -3,6 +3,7 @@ import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import { GenreService, SongService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
+import GenreFormInput from "../forms/CreateGenre";
 import SongFormInput from "../forms/CreateSong";
 
 const styles = {

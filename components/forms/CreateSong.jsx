@@ -42,7 +42,8 @@ const SongFormInput = ({
   const [valid, setValid] = useState({
     title: !!status,
     length: !!status,
-    album_id: !!status,
+    album_id: addTo === "genre" ? !!status: 1,
+    genre_id: addTo === "album" ? !!status: 1
   });
 
   useEffect(() => {
@@ -52,7 +53,6 @@ const SongFormInput = ({
   const handleChangeV2 =
     (prop) =>
     ({ value, valid: validProp }) => {
-      console.log(valid)
       setValues({ ...values, [prop]: value });
       setValid((state) => ({ ...state, [prop]: validProp }));
     };

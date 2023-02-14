@@ -24,7 +24,7 @@ class GenreService extends Services {
     }
 
     update(genre,data) {
-        return http.post(`/${this.genrePath}/${genre}`,data);
+        return http.put(`/${this.genrePath}/${genre}`,data);
     }
 
     delete(genre) {

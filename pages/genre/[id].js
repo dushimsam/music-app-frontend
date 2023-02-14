@@ -52,7 +52,7 @@ const GenrePage = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <GenreCoverPage item={item} />
+            <GenreCoverPage item={item} setItem={setItem} songs={songs} setSongs={setSongs}/>
           </div>
         </div>
         <div className="row justify-content-center">

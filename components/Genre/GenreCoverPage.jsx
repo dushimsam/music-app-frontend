@@ -18,14 +18,11 @@ const styles = {
   },
 };
 
-
-
-const GenreCoverPage = ({ item }) => {
-
+const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
   const [values, setValues] = useState({
     title: "",
     length: 1,
-    album_id:"",
+    album_id: "",
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -33,14 +30,15 @@ const GenreCoverPage = ({ item }) => {
 
   const Create = async () => {
     try {
-      let details = {...values}
+      let details = { ...values };
       details.genre_id = item.id;
-      details.album_id = parseInt(values.album_id)
-      details.length = parseInt(values.length)
-      
+      details.album_id = parseInt(values.album_id);
+      details.length = parseInt(values.length);
+
       setLoading(true);
       const res = await SongService.create(details);
       notifySuccess(res.data.message);
+      setSongs([...songs, res.data.model]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
@@ -49,13 +47,13 @@ const GenreCoverPage = ({ item }) => {
   };
 
   const [genreValues, setGenreValues] = useState({
-    type:"",
-  })
+    type: "",
+  });
   useEffect(async () => {
     try {
       const res = await GenreService.get_by_id(item.id);
       setGenreValues({
-        title: res.data.type,
+        type: res.data.type,
       });
     } catch (e) {
       notifyError(e.response.message);
@@ -63,8 +61,9 @@ const GenreCoverPage = ({ item }) => {
   }, [item]);
 
   const UpdateGenre = async () => {
-    try {   
+    try {
       const res = await GenreService.update(item.id, genreValues);
+      setItem(res.data.model);
       notifySuccess(res.data.message);
     } catch (e) {
       notifyError(e.response?.data?.message);

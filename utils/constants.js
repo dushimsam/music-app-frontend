@@ -15,6 +15,7 @@ export const SYSTEM_USERS = {
 export const MAIN_COLORS = {
     DEEP: '#aae1fb', DEEPER: '', SIDEBAR: '#e9f0f4', DEEPEST: '#022f96'
 }
+export const ACCEPTED_FILE_TYPES = 'image/x-png, image/png, image/jpg, image/jpeg,image/jfif'
 
 
 export const MESSAGES = {

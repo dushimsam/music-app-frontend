@@ -3,16 +3,11 @@ import AlubmCardStyles from "../../styles/components/AlbumCard.module.scss";
 import AlbumFormInput from "../forms/CreateAlbum";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
-import {AlbumService} from "../../services";
+import {AlbumService, CloudinaryService} from "../../services";
 import {notifyError, notifySuccess} from "../../utils/alerts";
+import Styles from "../../styles/components/GenreCard.module.scss";
 
-let CARDS_DETAILS = [
-  { image: "/test/image1.jpeg", title: "1", status: "" },
-  { image: "/test/image2.jpg", title: "2", status: "" },
-  { image: "/test/image3.jpg", title: "3", status: "" },
-  { image: "/test/image4.jpeg", title: "4", status: "" },
-  { image: "/test/image4.jpeg", title: "", status: "new" },
-];
+
 
 const AlbumSection = () => {
   const [values, setValues] = useState({
@@ -22,11 +17,15 @@ const AlbumSection = () => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
-
+  const [imgFile, setImgFile] = useState(null)
   const Create = async () => {
     try {
       setLoading(true);
       const res = await AlbumService.create(values);
+      const cloudinaryService = CloudinaryService(imgFile)      
+      const uploadRes = cloudinaryService.upload();
+
+      await AlbumService.uploadPicture(res.data.model.id, uploadRes.image_url);
       notifySuccess(res.data.message);
     } catch (e) {
       notifyError(e.response?.data?.message);
@@ -35,6 +34,38 @@ const AlbumSection = () => {
     }
   };
   
+  const handleUploadPicture = (files) => {
+      setImgFile(files[0]);
+  }
+
+
+  const [albums, setAlbums] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+
+  const fetchAlbums = async () => {
+    try {
+      const res = await AlbumService.get_all(currPage);
+      let muted_res = res.data.data;
+
+      if (currPage === 1) {
+        let item = {
+          id: "new",
+          type: "",
+          created_at: "",
+          updated_at: "",
+        };
+
+        muted_res.splice(0, 0, item);
+      }
+      setAlbums([...genres, ...muted_res]);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchGenres();
+  }, [currPage]);
 
   return (
     <div className="container">
@@ -45,7 +76,7 @@ const AlbumSection = () => {
       </div>
       <div className="row justify-content-center">
         <div className="row">
-          {CARDS_DETAILS.map((card, index) =>
+          {albums.map((card, index) =>
             card.status == "new" ? (
               <div className="col-2">
                 <Popup
@@ -78,6 +109,8 @@ const AlbumSection = () => {
                       btnActionText={"CREATE"}
                       content={
                         <AlbumFormInput
+                        imgFile={imgFile}
+                        handleUploadPicture={handleUploadPicture}
                           setIsFormValid={setIsFormValid}
                           setValues={setValues}
                           values={values}
@@ -91,35 +124,40 @@ const AlbumSection = () => {
               <div className="col-2" key={index}>
                 <div>
                   <img
-                    src={card.image}
+                    src={card.cover_image_url}
                     alt="album cover"
                     className={`img-fluid bg-cover ${AlubmCardStyles.image}`}
                   />
                   <div className="card-body">
-                    <h6 className="card-title">Card title</h6>
-                    <p className="card-text"> 12th January 2011 </p>
+                    <h6 className="card-title">{card.title}</h6>
+                    <p className="card-text"> {card.release_date} </p>
                   </div>
                 </div>
               </div>
             )
           )}
         </div>
+      </div>
+      <div className="row justify-content-center">
         <div className="col-3">
-          <p>See more</p>
-          <button className="btn">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              width="24"
-              height="24"
+          <div className={` py-3 ${Styles.viewMore}`}>
+            <p
+              className="font-weight-bold"
+              on
+              onClick={() => setCurrPage(currPage + 1)}
             >
-              <path fill="none" d="M0 0h24v24H0z" />
-              <path
-                d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z"
-                fill="rgba(149,164,166,1)"
-              />
-            </svg>
-          </button>
+              View more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
+              </svg>
+            </p>
+          </div>
         </div>
       </div>
     </div>

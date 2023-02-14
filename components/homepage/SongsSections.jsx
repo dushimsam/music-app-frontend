@@ -1,6 +1,33 @@
+import { useState } from "react";
+import { SongService } from "../../services";
 import styles from "../../styles/components/SongCard.module.scss";
+import Styles from "../../styles/components/GenreCard.module.scss";
 
 const SongsSection = ({ showTitle }) => {
+  const [songs, setSongs] = useState([]);
+  const fetchSongs = async () => {
+    try {
+      const res = await SongService.get_all(currPage);
+      let muted_res = res.data.data;
+
+      // if (currPage === 1) {
+      //   let item = {
+      //     id: "new",
+      //     type: "",
+      //     created_at: "",
+      //     updated_at: "",
+      //   };
+
+      //   muted_res.splice(0, 0, item);
+      // }
+      setSongs([...songs, ...muted_res]);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    }
+  };
+  useEffect(() => {
+    fetchSongs();
+  }, [currPage]);
   return (
     <div className="container">
       {showTitle && (
@@ -12,8 +39,7 @@ const SongsSection = ({ showTitle }) => {
         </div>
       )}
       <div className="row justify-content-center">
-        {/*Generate 10 items to be mapped on */}
-        {Array.from({ length: 10 }).map((_, index) => (
+        {songs.map((song,index) =>(
           <div
             className={`col-12 row justify-content-between my-2  ${styles.card}`}
             key={index}
@@ -28,10 +54,10 @@ const SongsSection = ({ showTitle }) => {
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="64" height="64"><path fill="none" d="M0 0h24v24H0z"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zM10.622 8.415a.4.4 0 0 0-.622.332v6.506a.4.4 0 0 0 .622.332l4.879-3.252a.4.4 0 0 0 0-.666l-4.88-3.252z" fill="rgba(205,122,215,1)"/></svg>
             </div>
             <div className="col-5">
-              <h6 className="">Song title</h6>
+              <h6 className="">{song.title}</h6>
             </div>
             <div className="col-1">
-              {`${Math.floor(Math.random() * 100)} min`}
+              {`${song.length()} min`}
             </div>
             <div className="col-1">
               <button className="btn">
@@ -48,6 +74,28 @@ const SongsSection = ({ showTitle }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="row justify-content-center">
+        <div className="col-3">
+          <div className={` py-3 ${Styles.viewMore}`}>
+            <p
+              className="font-weight-bold"
+              on
+              onClick={() => setCurrPage(currPage + 1)}
+            >
+              See more
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
+              </svg>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

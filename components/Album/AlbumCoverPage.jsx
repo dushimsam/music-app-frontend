@@ -1,5 +1,9 @@
+import { useState } from "react";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
+import { AlbumService } from "../../services";
+import { notifyError } from "../../utils/alerts";
+import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
 
 const styles = {
@@ -26,22 +30,69 @@ const AlbumCoverPage = () => {
     title: "",
     length: 1,
     genre_id: "",
-    album_id: "",
   });
 
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [defaultFile, setDefaultFile] = useState("");
+  const [imgUrl, setImgUrl] = useState(null);
 
   const Create = async () => {
     try {
+      let details = { ...values };
+      details.album_id = item.id;
+      details.genre_id = parseInt(values.album_id);
+      details.length = parseInt(values.length);
+
       setLoading(true);
-      const res = await SongService.create(values);
+      const res = await SongService.create(details);
       notifySuccess(res.data.message);
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
       setLoading(false);
     }
+  };
+
+  const [albumValues, setAlbumValues] = useState({
+    title: item.title,
+    description: item.description,
+    release_date: item.release_date,
+  });
+
+  useEffect(async () => {
+    try {
+      const res = await AlbumService.get_by_id(item.id);
+      setAlbumValues({
+        title: res.data.title,
+        description: res.data.description,
+        release_date: res.data.release_date,
+      });
+      setDefaultFile(res.data.cover_image_url);
+    } catch (err) {
+      notifyError(e.response.message);
+    }
+  }, [item]);
+
+  const UpdateAlbum = async () => {
+    try {
+      setLoading(true);
+      if (imgUrl) {
+        const cloudinaryService = CloudinaryService(imgUrl);
+        const uploadRes = cloudinaryService.upload();
+        albumValues.cover_image_url = uploadRes.image_url;
+      }
+      const res = await AlbumService.update(item.id, albumValues);
+      notifySuccess(res.data.message);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleUploadPicture = (files) => {
+    setImgUrl(files[0]);
   };
   return (
     <div className="container-fluid">
@@ -63,10 +114,39 @@ const AlbumCoverPage = () => {
                   style={styles.title}
                 >{`Country music`}</h1>
                 <p className="text-light">{`There are 100 songs under this category`}</p>
-                <button className="btn-dark px-3 py-2 rounded">
-                  {" "}
-                  EDIT DETAILS{" "}
-                </button>
+                <Popup
+                  trigger={
+                    <button className="btn-dark px-3 py-2 rounded">
+                      {" "}
+                      EDIT DETAILS{" "}
+                    </button>
+                  }
+                  modal
+                  nested
+                >
+                  {(close) => (
+                    <ModalWrapper
+                      title={`UPDATE ${item.title}`}
+                      close={close}
+                      btnActionText={"SAVE CHANGES"}
+                      setLoading={setLoading}
+                      loading={loading}
+                      disable={isFormValid}
+                      callFun={UpdateAlbum}
+                      content={
+                        <AlbumFormInput
+                          handleUploadPicture={handleUploadPicture}
+                          setIsFormValid={setIsFormValid}
+                          setValues={setAlbumValues}
+                          imgFile={imgUrl}
+                          defaultFile={defaultFile}
+                          status={"update"}
+                          values={albumValues}
+                        />
+                      }
+                    />
+                  )}
+                </Popup>
               </div>
             </div>
             <div className="row justify-content-between pt-5">
@@ -96,10 +176,11 @@ const AlbumCoverPage = () => {
                 >
                   {(close) => (
                     <ModalWrapper
-                      title={"Add new Song"}
+                      title={`Add song to ${item.title}`}
                       close={close}
                       btnActionText={"CREATE"}
                       setLoading={setLoading}
+                      loading={loading}
                       disable={isFormValid}
                       callFun={Create}
                       content={

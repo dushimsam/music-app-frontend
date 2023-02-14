@@ -2,15 +2,35 @@
 import AdminDashboard from '../../layouts/Dashboard';
 import SongsSection from '../../components/homepage/SongsSections';
 import AlbumCoverPage from '../../components/Album/AlbumCoverPage';
+import { AlbumService } from '../../services';
 
 
 const AlbumPage = () =>{
+  const router = useRouter();
+  const id = router.query.id;
+
+  const [item, setItem] = useState({ type: "...", songs: 0 });
+
+  const getAlbum = () => {
+    (async function () {
+      try {
+        const res = await AlbumService.get_by_id(id);
+        setItem(res.data);
+      } catch (e) {
+        notifyError(e.response?.data?.message);
+      }
+    })();
+  };
+
+  useEffect(() => {
+    id && getAlbum();
+  }, [id]);
   return(
     <AdminDashboard isVerified={true}>
     <div className="container-fluid">
       <div className="row">
         <div className="col-12">
-          <AlbumCoverPage/>
+          <AlbumCoverPage item={item}/>
         </div>
       </div>
       <div className='row justify-content-center'>

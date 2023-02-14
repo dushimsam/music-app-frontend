@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
-import { SongService } from "../../services";
+import { GenreService, SongService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import SongFormInput from "../forms/CreateSong";
 
@@ -46,6 +46,31 @@ const GenreCoverPage = ({ item }) => {
       setLoading(false);
     }
   };
+
+  const [genreValues, setGenreValues] = useState({
+    type:"",
+  })
+  useEffect(async () => {
+    try {
+      const res = await GenreService.get_by_id(item.id);
+      setGenreValues({
+        title: res.data.type,
+      });
+    } catch (e) {
+      notifyError(e.response.message);
+    }
+  }, [item]);
+
+  const UpdateGenre = async () => {
+    try {   
+      const res = await GenreService.update(item.id, genreValues);
+      notifySuccess(res.data.message);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
   return (
     <div className="container-fluid">
       <div className="row">
@@ -55,10 +80,36 @@ const GenreCoverPage = ({ item }) => {
               <div className="col-5 pt-4">
                 <h2 className="text-light font-weight-bold">{`${item.type}`}</h2>
                 <p className="text-light">{`There are 100 songs under this category`}</p>
-                <button className="btn-dark px-3 py-2 rounded">
-                  {" "}
-                  EDIT DETAILS{" "}
-                </button>
+                <Popup
+                  trigger={
+                    <button className="btn-dark px-3 py-2 rounded">
+                      {" "}
+                      EDIT DETAILS{" "}
+                    </button>
+                  }
+                  modal
+                  nested
+                >
+                  {(close) => (
+                    <ModalWrapper
+                      title={`UPDATE ${item.type}`}
+                      close={close}
+                      btnActionText={"SAVE CHANGES"}
+                      setLoading={setLoading}
+                      loading={loading}
+                      disable={isFormValid}
+                      callFun={UpdateGenre}
+                      content={
+                        <GenreFormInput
+                          setIsFormValid={setIsFormValid}
+                          setValues={setGenreValues}
+                          status={"update"}
+                          values={genreValues}
+                        />
+                      }
+                    />
+                  )}
+                </Popup>
               </div>
             </div>
             <div className="row justify-content-between pt-5">

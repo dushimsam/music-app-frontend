@@ -8,7 +8,7 @@ class SongService extends Services {
     }
 
     get_all_paginated(page=1) {
-        return http.get(`/${this.songPath}?page=${page}`);
+        return http.get(`/${this.songPath}/paginated?page=${page}`);
     }
 
     create(data) {

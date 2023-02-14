@@ -6,6 +6,8 @@ import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import { AlbumService, CloudinaryService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import Styles from "../../styles/components/GenreCard.module.scss";
+import Router from "next/router";
+
 
 const AlbumSection = () => {
   const [values, setValues] = useState({
@@ -51,12 +53,12 @@ const AlbumSection = () => {
   };
 
   const [currPage, setCurrPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalAlbums, setTotalAlbums] = useState(0);
 
   const fetchAlbums = async () => {
     try {
       const res = await AlbumService.get_all_paginated(currPage);
-      setTotalPages(res.data.total);
+      setTotalAlbums(res.data.total);
       setAlbums([...albums, ...res.data.data]);
     } catch (e) {
       notifyError(e.response?.data?.message);
@@ -122,8 +124,8 @@ const AlbumSection = () => {
               </div>
             ) : (
               <div className="col-2" key={index}>
-                <div>
-                  <img
+                <div onClick={() => Router.push("album/" + card.id)}>
+                  <img 
                     src={card.cover_image_url}
                     alt="album cover"
                     className={`img-fluid bg-cover ${AlubmCardStyles.image}`}
@@ -138,7 +140,7 @@ const AlbumSection = () => {
           )}
         </div>
       </div>
-      {currPage < totalPages && (
+      {albums.length < totalAlbums && (
         <div className="row justify-content-center">
           <div className="col-3">
             <div className={` py-3 ${Styles.viewMore}`}>

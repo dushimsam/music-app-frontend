@@ -23,7 +23,7 @@ const ModalWrapper = ({
           <button
             className="btn  ml-md-0 px-md-3 shadow btn-primary"
             onClick={() => callFun()}
-            disabled={!disable}
+            disabled={!disable || loading}
           >
             {loading ? (
               <Spinner

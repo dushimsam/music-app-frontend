@@ -13,12 +13,14 @@ const GenreSection = () => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [totalGenres, setTotalGenres] = useState(0);
 
   const Create = async () => {
     try {
       setLoading(true);
       const res = await GenreService.create(values);
       notifySuccess(res.data.message);
+      setGenres([...genres, res.data.model]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
@@ -26,19 +28,21 @@ const GenreSection = () => {
     }
   };
 
-  const [genres, setGenres] = useState([{
-    id: "new",
-    type: "",
-    created_at: "",
-    updated_at: "",
-  }]);
+  const [genres, setGenres] = useState([
+    {
+      id: "new",
+      type: "",
+      created_at: "",
+      updated_at: "",
+    },
+  ]);
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchGenres = async () => {
     try {
-      const res = await GenreService.get_all(currPage);
-      setTotalPages(res.data.total);
+      const res = await GenreService.get_all_paginated(currPage);
+      setTotalGenres(res.data.total);
       setGenres([...genres, ...res.data.data]);
     } catch (e) {
       notifyError(e.response?.data?.message);
@@ -125,29 +129,30 @@ const GenreSection = () => {
           )
         )}
       </div>
-      {currPage < totalPages && (
-      <div className="row justify-content-center">
-        <div className="col-3">
-          <div className={` py-3 ${Styles.viewMore}`}>
-            <p
-              className="font-weight-bold"
-              on
-              onClick={() => setCurrPage(currPage + 1)}
-            >
-              View more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
+      {genres.length < totalGenres && (
+        <div className="row justify-content-center">
+          <div className="col-3">
+            <div className={` py-3 ${Styles.viewMore}`}>
+              <p
+                className="font-weight-bold"
+                on
+                onClick={() => setCurrPage(currPage + 1)}
               >
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
-              </svg>
-            </p>
+                View more
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
+                </svg>
+              </p>
+            </div>
           </div>
         </div>
-      </div>)}
+      )}
     </div>
   );
 };

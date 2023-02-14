@@ -12,6 +12,7 @@ if (typeof window !== "undefined") {
 export const HttpCommon = axios.create({
     baseURL: `${domain}api`,
     headers: {
-        "Content-type": "application/json"
+        "Content-type": "application/json",
+        Authorization: "Bearer " + token,
     },
 });

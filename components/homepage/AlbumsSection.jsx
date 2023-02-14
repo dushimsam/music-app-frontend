@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AlubmCardStyles from "../../styles/components/AlbumCard.module.scss";
 import AlbumFormInput from "../forms/CreateAlbum";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
-import {AlbumService, CloudinaryService} from "../../services";
-import {notifyError, notifySuccess} from "../../utils/alerts";
+import { AlbumService, CloudinaryService } from "../../services";
+import { notifyError, notifySuccess } from "../../utils/alerts";
 import Styles from "../../styles/components/GenreCard.module.scss";
-
-
 
 const AlbumSection = () => {
   const [values, setValues] = useState({
@@ -17,54 +15,56 @@ const AlbumSection = () => {
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [imgFile, setImgFile] = useState(null)
+  const [imgFile, setImgFile] = useState(null);
+  const [albums, setAlbums] = useState([
+    {
+      id: "new",
+      type: "",
+      created_at: "",
+      updated_at: "",
+    },
+  ]);
+
   const Create = async () => {
     try {
+      if(!imgFile) return notifyError("Please upload a cover image");
       setLoading(true);
-      const res = await AlbumService.create(values);
-      const cloudinaryService = CloudinaryService(imgFile)      
-      const uploadRes = cloudinaryService.upload();
-
-      await AlbumService.uploadPicture(res.data.model.id, uploadRes.image_url);
+      let res = await AlbumService.create(values);
+      
+      const cloudinaryService = new CloudinaryService(imgFile);
+      const uploadRes = await cloudinaryService.upload();
+      res = await AlbumService.uploadPicture(
+        res.data.model.id,
+        uploadRes.data.secure_url
+      );
       notifySuccess(res.data.message);
+      setAlbums([...albums, res.data.model]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
       setLoading(false);
     }
   };
-  
+
   const handleUploadPicture = (files) => {
-      setImgFile(files[0]);
-  }
+    setImgFile(files[0]);
+  };
 
-
-  const [albums, setAlbums] = useState([]);
   const [currPage, setCurrPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   const fetchAlbums = async () => {
     try {
-      const res = await AlbumService.get_all(currPage);
-      let muted_res = res.data.data;
-
-      if (currPage === 1) {
-        let item = {
-          id: "new",
-          type: "",
-          created_at: "",
-          updated_at: "",
-        };
-
-        muted_res.splice(0, 0, item);
-      }
-      setAlbums([...genres, ...muted_res]);
+      const res = await AlbumService.get_all_paginated(currPage);
+      setTotalPages(res.data.total);
+      setAlbums([...albums, ...res.data.data]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     }
   };
 
   useEffect(() => {
-    fetchGenres();
+    fetchAlbums();
   }, [currPage]);
 
   return (
@@ -77,7 +77,7 @@ const AlbumSection = () => {
       <div className="row justify-content-center">
         <div className="row">
           {albums.map((card, index) =>
-            card.status == "new" ? (
+            card.id == "new" ? (
               <div className="col-2">
                 <Popup
                   trigger={
@@ -109,8 +109,8 @@ const AlbumSection = () => {
                       btnActionText={"CREATE"}
                       content={
                         <AlbumFormInput
-                        imgFile={imgFile}
-                        handleUploadPicture={handleUploadPicture}
+                          imgFile={imgFile}
+                          handleUploadPicture={handleUploadPicture}
                           setIsFormValid={setIsFormValid}
                           setValues={setValues}
                           values={values}
@@ -138,28 +138,30 @@ const AlbumSection = () => {
           )}
         </div>
       </div>
-      <div className="row justify-content-center">
-        <div className="col-3">
-          <div className={` py-3 ${Styles.viewMore}`}>
-            <p
-              className="font-weight-bold"
-              on
-              onClick={() => setCurrPage(currPage + 1)}
-            >
-              View more
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
+      {currPage < totalPages && (
+        <div className="row justify-content-center">
+          <div className="col-3">
+            <div className={` py-3 ${Styles.viewMore}`}>
+              <p
+                className="font-weight-bold"
+                on
+                onClick={() => setCurrPage(currPage + 1)}
               >
-                <path fill="none" d="M0 0h24v24H0z" />
-                <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
-              </svg>
-            </p>
+                View more
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path fill="none" d="M0 0h24v24H0z" />
+                  <path d="M12 13.172l4.95-4.95 1.414 1.414L12 16 5.636 9.636 7.05 8.222z" />
+                </svg>
+              </p>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

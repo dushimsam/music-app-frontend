@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Services} from "./services";
 
-export const domain = "https://api.cloudinary.com/v1_1/mount-carmel-school";
+export const domain = "https://api.cloudinary.com/v1_1/dushsam";
 const CLOUDINARY_UPLOAD_PRESET = "flhyd7jb";
 
 const http = axios.create({

@@ -6,13 +6,15 @@ class AlubmService extends Services {
     return http.get(`/${this.albumPath}`);
   }
 
+  get_all_paginated(page = 1) {
+    return http.get(`/${this.albumPath}/paginated?page=${page}`);
+  }
+  
   get_by_id(album) {
     return http.get(`/${this.albumPath}/${album}`);
   }
 
-  get_all_paginated(page = 1) {
-    return http.get(`/${this.albumPath}?page=${page}`);
-  }
+  
 
   get(album) {
     return http.get(`/${this.albumPath}/${album}`);
@@ -25,8 +27,8 @@ class AlubmService extends Services {
     return http.post(`/${this.albumPath}`, data);
   }
 
-  uploadPicture(data) {
-    return http.put(`/${this.albumPath}/upload`, data);
+  uploadPicture(album,imgUrl) {
+    return http.put(`/${this.albumPath}/${album}/upload`, {'cover_image_url': imgUrl});
   }
 
   delete(album) {

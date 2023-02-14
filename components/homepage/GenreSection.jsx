@@ -26,25 +26,20 @@ const GenreSection = () => {
     }
   };
 
-  const [genres, setGenres] = useState([]);
+  const [genres, setGenres] = useState([{
+    id: "new",
+    type: "",
+    created_at: "",
+    updated_at: "",
+  }]);
   const [currPage, setCurrPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   const fetchGenres = async () => {
     try {
       const res = await GenreService.get_all(currPage);
-      let muted_res = res.data.data;
-
-      if (currPage === 1) {
-        let item = {
-          id: "new",
-          type: "",
-          created_at: "",
-          updated_at: "",
-        };
-
-        muted_res.splice(0, 0, item);
-      }
-      setGenres([...genres, ...muted_res]);
+      setTotalPages(res.data.total);
+      setGenres([...genres, ...res.data.data]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     }
@@ -130,6 +125,7 @@ const GenreSection = () => {
           )
         )}
       </div>
+      {currPage < totalPages && (
       <div className="row justify-content-center">
         <div className="col-3">
           <div className={` py-3 ${Styles.viewMore}`}>
@@ -151,7 +147,7 @@ const GenreSection = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div>)}
     </div>
   );
 };

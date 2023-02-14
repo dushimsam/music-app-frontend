@@ -1,33 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SongService } from "../../services";
 import styles from "../../styles/components/SongCard.module.scss";
 import Styles from "../../styles/components/GenreCard.module.scss";
+import { notifyError } from "../../utils/alerts";
 
 const SongsSection = ({ showTitle }) => {
   const [songs, setSongs] = useState([]);
+  const [currPage, setCurrPage] = useState(1);
+
   const fetchSongs = async () => {
     try {
       const res = await SongService.get_all(currPage);
       let muted_res = res.data.data;
-
-      // if (currPage === 1) {
-      //   let item = {
-      //     id: "new",
-      //     type: "",
-      //     created_at: "",
-      //     updated_at: "",
-      //   };
-
-      //   muted_res.splice(0, 0, item);
-      // }
       setSongs([...songs, ...muted_res]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     }
   };
+
   useEffect(() => {
     fetchSongs();
   }, [currPage]);
+
+  
   return (
     <div className="container">
       {showTitle && (

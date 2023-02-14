@@ -15,19 +15,19 @@ const App = () => {
     return (
         <AdminDashboard isVerified={true}>
           <div className='container'>
-            <div className='row justify-content-center'>
+            <div className='row justify-content-center pt-2'>
                 <div className='col-12'>
                     <AlbumsSection/>
                 </div>
             </div>
 
-            <div className='row justify-content-center'>
+            <div className='row justify-content-center pt-5'>
                 <div className='col-12'>
                     <GenreSection/>
                 </div>
             </div>
 
-            <div className='row justify-content-center'>
+            <div className='row justify-content-center pt-5'>
                 <div className='col-12'>
                     <SongsSection showTitle={true}/>
                 </div>

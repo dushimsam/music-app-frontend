@@ -7,7 +7,7 @@ import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import SongFormInput from "../forms/CreateSong";
 
-const SongCard = ({ status, song, index }) => {
+const SongCard = ({ status, song, index , item}) => {
   const [currSong, setCurrSong] = useState({
     title: "",
     length: 1,
@@ -26,8 +26,8 @@ const SongCard = ({ status, song, index }) => {
     setValues({
       title: song.title,
       length: song.length,
-      album_id: song.album.id,
-      genre_id: song.genre.id,
+      album_id: status === "album" ? item.id : song.album.id,
+      genre_id: status === "genre" ? item.id : song.genre.id,
     });
   }, [song]);
 
@@ -145,6 +145,7 @@ const SongsSection = ({
   setCurrPage,
   currPage,
   totalSongs,
+  item,
   songs,
   status,
 }) => {
@@ -176,7 +177,7 @@ const SongsSection = ({
       )}
 
       {songs.map((song, index) => (
-        <SongCard song={song} key={index} index={index} />
+        <SongCard song={song} key={index} index={index} item={item} status={status}/>
       ))}
       {songs.length < totalSongs && (
         <div className="row justify-content-center">

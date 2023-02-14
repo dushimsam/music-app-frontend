@@ -1,8 +1,9 @@
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
 // import RouteProtector from "../../middlewares/RouteProtector";
-import React, {useEffect, useState} from "react";
+import React, {Children, useEffect, useState} from "react";
 import Footer from "../components/Footer";
+import RouteProtector from "../middlewares/routeProtector";
 
 
 const ContentCover = ({children}) => {
@@ -71,6 +72,6 @@ const ContentCover = ({children}) => {
 export default function AdminDashboard({children, isVerified}) {
     return (
         isVerified ?
-            <ContentCover children={children}/> :<></>
+            <ContentCover children={children}/> :<RouteProtector children={<ContentCover children={children}/>}/>
     );
 }

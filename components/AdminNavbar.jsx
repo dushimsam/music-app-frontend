@@ -3,6 +3,7 @@ import Link from "next/link"
 import React from "react";
 // import NotificationContext from "../Notification";
 import Auth from "../middlewares/auth"
+import { useRouter } from "next/router";
 
 export default function AdminNavbar({setShowSidebar, sidebarState}) {
 
@@ -12,9 +13,12 @@ export default function AdminNavbar({setShowSidebar, sidebarState}) {
         fullNames: "John Doe",
         username: "doe",
     }
+    
+    const router = useRouter();
 
-    const logOut = () => {
-        Auth.logout();
+    const logOut = async () => {
+        Auth.logout()
+        await router.push("/");
     };
 
     const notifications = 10;

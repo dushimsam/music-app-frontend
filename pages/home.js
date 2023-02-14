@@ -28,7 +28,7 @@ const App = () => {
 
   
     return (
-        <AdminDashboard isVerified={true}>
+        <AdminDashboard isVerified={false}>
           <div className='container'>
             <div className='row justify-content-center pt-2'>
                 <div className='col-12'>

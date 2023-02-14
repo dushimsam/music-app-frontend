@@ -19,7 +19,7 @@ const AlbumPage = () => {
         const res = await AlbumService.get_by_id(id);
         setItem(res.data);
       } catch (e) {
-        notifyError(e.response?.data?.message);
+        // notifyError(e.response?.data?.message);
       }
     })();
   };
@@ -39,7 +39,7 @@ const AlbumPage = () => {
       setSongs([...songs, ...res.data.data]);
       setTotalSongs(res.data.total);
     } catch (e) {
-      notifyError(e.response?.data?.message);
+      // notifyError(e.response?.data?.message);
     }
   };
 
@@ -48,7 +48,7 @@ const AlbumPage = () => {
   }, [currPage]);
 
   return (
-    <AdminDashboard isVerified={true}>
+    <AdminDashboard isVerified={false}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
@@ -58,6 +58,7 @@ const AlbumPage = () => {
         <div className="row justify-content-center">
           <div className="col-10 pt-4">
             <SongsSection
+            item={item}
               showTitle={false}
               currPage={currPage}
               status={"album"}

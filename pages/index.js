@@ -58,7 +58,7 @@ export default function Login() {
                         RouteService.removePrevRoute();
                         await Router.push(link);
                     } else {
-                        window.location.href = "/";
+                        window.location.href = "/home";
                     }
                 }
             }

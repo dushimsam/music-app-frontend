@@ -1,3 +1,4 @@
+//Import necessarry components
 import AlbumsSection from "../components/homepage/AlbumsSection"
 import SongsSection from '../components/homepage/SongsSections';
 import AdminDashboard from '../layouts/Dashboard';

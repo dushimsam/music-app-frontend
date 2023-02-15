@@ -19,7 +19,7 @@ const ModalWrapper = ({
       <div className={styles.header}> {title} </div>
       <div className={styles.content}>{content}</div>
       <div className={`row justify-content-center ${styles.actions}`}>
-        <div className="col-md-2 col-6 pl-3">
+        <div className="col-md-2 col-6 pl-md-3">
           <button
             className="btn  ml-md-0 px-md-3 shadow btn-primary"
             onClick={() => callFun()}
@@ -38,7 +38,7 @@ const ModalWrapper = ({
             )}
           </button>
         </div>
-        <div className="col-4">
+        <div className="col-6">
           <button
             className="btn btn-danger"
             onClick={() => {

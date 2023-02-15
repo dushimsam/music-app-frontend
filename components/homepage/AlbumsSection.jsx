@@ -69,6 +69,7 @@ const AlbumSection = () => {
     fetchAlbums();
   }, [currPage]);
 
+
   return (
     <div className="container">
       <div className="row justify-content-start">

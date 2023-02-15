@@ -31,8 +31,8 @@ export const ImageContainer = ({file, status}) => {
 
 const otherStyles = {
     img: {
-        maxWidth: "45em",
-        maxHeight: "15em",
+        maxWidth: "20em",
+        maxHeight: "10em",
         border: "0.5em"
     }
 }

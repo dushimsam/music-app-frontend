@@ -64,7 +64,7 @@ const AlbumFormInput = ({
         </div>
         <div className="col-12 col-md-6">
           {status === "update" ? (
-            <div className="form-group col-7 px-0 mt-3">
+            <div className="form-group col-7 px-0 mt-2">
               <h6 className={"font-weight-bold"}>Existing Picture</h6>
               <ImageContainer file={defaultFile} status={status} />
             </div>

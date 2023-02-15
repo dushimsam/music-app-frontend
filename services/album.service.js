@@ -26,7 +26,7 @@ class AlubmService extends Services {
   }
 
   update(album, data) {
-    return http.get(`/${this.albumPath}/${album}`, data);
+    return http.put(`/${this.albumPath}/${album}`, data);
   }
   create(data) {
     return http.post(`/${this.albumPath}`, data);

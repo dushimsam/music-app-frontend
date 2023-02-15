@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import { AlbumService, SongService } from "../../services";
+import {CloudinaryService} from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
@@ -18,7 +19,7 @@ const styles = {
   }
 };
 
-const AlbumCoverPage = ({item, setSongs, songs}) => {
+const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
   const [values, setValues] = useState({
     title: "",
     length: 1,
@@ -70,13 +71,17 @@ const AlbumCoverPage = ({item, setSongs, songs}) => {
   const UpdateAlbum = async () => {
     try {
       setLoading(true);
+      let update_details = {...albumValues};
       if (imgUrl) {
-        const cloudinaryService = CloudinaryService(imgUrl);
-        const uploadRes = cloudinaryService.upload();
-        albumValues.cover_image_url = uploadRes.image_url;
+        const cloudinaryService = new CloudinaryService(imgUrl);
+        const uploadRes = await cloudinaryService.upload();
+        update_details.cover_image_url = uploadRes.data.secure_url;
+      }else{
+        albumValues.cover_image_url = defaultFile;
       }
-      const res = await AlbumService.update(item.id, albumValues);
+      const res = await AlbumService.update(item.id, update_details);
       notifySuccess(res.data.message);
+      setItem(res.data.model)
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {

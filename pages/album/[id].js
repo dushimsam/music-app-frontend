@@ -53,7 +53,7 @@ const AlbumPage = () => {
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <AlbumCoverPage item={item} setSongs={setSongs} songs={songs}/>
+            <AlbumCoverPage item={item} setItem={setItem} setSongs={setSongs} songs={songs}/>
           </div>
         </div>
         <div className="row justify-content-center">

@@ -124,7 +124,7 @@ const AlbumSection = () => {
                 </Popup>
               </div>
             ) : (
-              <div className="col-md-4 col-5 my-2" key={index}>
+              <div className="col-md-3 col-5 my-2" key={index}>
               <div className={`px-4 py-1 ${AlubmCardStyles.card}`}onClick={() => Router.push("album/" + card.id)}>
                 <div className={`${AlubmCardStyles.cardImage}`}>
                   <img 

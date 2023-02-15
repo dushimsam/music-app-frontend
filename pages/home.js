@@ -44,7 +44,7 @@ const App = () => {
 
             <div className='row justify-content-center pt-5' id={"featured"}>
                 <div className='col-12'>
-                    <SongsSection status={`all`}  currPage={currPage} showTitle={true} totalSongs={totalSongs} setCurrPage={setCurrPage} songs={songs}/>
+                    <SongsSection status={`all`}  currPage={currPage} showTitle={true} totalSongs={totalSongs} setCurrPage={setCurrPage} songs={songs} setSongs={setSongs}/>
                 </div>
             </div>
           </div>

@@ -64,6 +64,7 @@ const GenrePage = () => {
           <div className="col-10 pt-4">
             <SongsSection
               item={item}
+              setSongs={setSongs}
               showTitle={false}
               status={"genre"}
               currPage={currPage}

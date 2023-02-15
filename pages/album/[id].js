@@ -61,6 +61,7 @@ const AlbumPage = () => {
             <SongsSection
                item={item}
               showTitle={false}
+              setSongs={setSongs}
               currPage={currPage}
               status={"album"}
               totalSongs={totalSongs}

@@ -101,6 +101,7 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
       setLoading(true);
       const res = await AlbumService.delete(item.id);
       notifySuccess(res.data.message);
+      
       Router.push("/home#album")
     } catch (e) {
       notifyError(e.response?.data?.message);

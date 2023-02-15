@@ -5,6 +5,8 @@ import { GenreService, SongService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import GenreFormInput from "../forms/CreateGenre";
 import SongFormInput from "../forms/CreateSong";
+import DeleteConfirmation from "../Reusable/modals/DeleteConfirmationModal";
+import Router  from "next/router";
 
 const styles = {
   header: {
@@ -71,6 +73,21 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
       setLoading(false);
     }
   };
+
+
+  const DeleteGenre = async () => {
+    try {
+      setLoading(true);
+      const res = await GenreService.delete(item.id);
+      notifySuccess(res.data.message);
+      Router.push("/home#genre")
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div className="container-fluid">
       <div className="row">
@@ -79,7 +96,7 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
             <div className="row justify-content-start">
               <div className="col-12 pt-4">
                 <h2 className="text-light font-weight-bold">{`${item.type}`}</h2>
-                <p className="text-light">{`There are 100 songs under this category`}</p>
+                <p className="text-light">{`There are ${songs.length} songs under this category`}</p>
                 <Popup
                   trigger={
                     <button className="btn-dark px-md-3 py-md-2 rounded">
@@ -157,7 +174,8 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
                     />
                   )}
                 </Popup>
-                <button
+                <Popup
+                  trigger={ <button
                   className="btn px-2 py-2"
                   style={{ backgroundColor: "white" }}
                 >
@@ -170,7 +188,14 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm2 2v10h12V10H6zm3 2h2v6H9v-6zm4 0h2v6h-2v-6zM7 5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9z" />
                   </svg>
-                </button>{" "}
+                </button> }
+                  modal
+                  nested
+                >
+                  {(close) => (
+                     <DeleteConfirmation item={item} deleteItem={DeleteGenre} loading={loading} setLoading={setLoading} title={"Are you sure you want to delete this genre"} close={close} warningText={"All associated songs will be deleted as well !!!"}/>
+                  )}
+                </Popup>{" "}
               </div>
               <div className="col-4"></div>
             </div>

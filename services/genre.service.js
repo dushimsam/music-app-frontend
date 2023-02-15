@@ -28,7 +28,7 @@ class GenreService extends Services {
     }
 
     delete(genre) {
-        return http.delete(`/${this.genrePath}}/${genre}`);
+        return http.delete(`/${this.genrePath}/${genre}`);
     }
 
     get_songs(genre){

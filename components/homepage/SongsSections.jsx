@@ -6,8 +6,10 @@ import { notifyError, notifySuccess } from "../../utils/alerts";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import SongFormInput from "../forms/CreateSong";
+import DeleteConfirmation from "../Reusable/modals/DeleteConfirmationModal";
 
-const SongCard = ({ status, song, index, item }) => {
+
+const SongCard = ({ status, song, index, item, removeSong }) => {
   const [currSong, setCurrSong] = useState({
     title: "",
     length: 1,
@@ -46,6 +48,7 @@ const SongCard = ({ status, song, index, item }) => {
       const res = await SongService.update(currSong.id, details);
       notifySuccess(res.data.message);
       setCurrSong(res.data.model);
+
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
@@ -53,7 +56,18 @@ const SongCard = ({ status, song, index, item }) => {
     }
   };
 
-  // convert this design into a form of a table with bootstrap
+  const DeleteSong = async () => {
+    try {
+      setLoading(true);
+      const res = await SongService.delete(currSong.id);
+      notifySuccess(res.data.message);
+      removeSong(currSong)
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <tr className={`${styles.card}`}>
@@ -125,6 +139,8 @@ const SongCard = ({ status, song, index, item }) => {
             />
           )}
         </Popup>
+        <Popup
+                  trigger={ 
         <button className="btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -135,7 +151,14 @@ const SongCard = ({ status, song, index, item }) => {
             <path fill="none" d="M0 0h24v24H0z" />
             <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm3-3V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9zm0 8v6h2v-6H9zm4 0v6h2v-6h-2z" />
           </svg>
-        </button>
+        </button>}
+                  modal
+                  nested
+                >
+                  {(close) => (
+                     <DeleteConfirmation deleteItem={DeleteSong} loading={loading} setLoading={setLoading} title={"Are you sure you want to delete this song"} close={close}/>
+                  )}
+                </Popup>{" "}
       </td>
     </tr>
   );
@@ -145,10 +168,16 @@ const SongsSection = ({
   setCurrPage,
   currPage,
   totalSongs,
+  setSongs,
   item,
   songs,
   status,
 }) => {
+
+  const removeSong = (item) =>{
+    const newSongs = songs.filter(song => song.id !== item.id)
+    setSongs(newSongs)
+  }
   return (
     <div className="container-fluid">
       {showTitle && (
@@ -185,7 +214,8 @@ const SongsSection = ({
               {songs.length == 0 && (
                 <div className="row justify-content-center pt-5">
                   <div className="col-5">
-                    No songs available under this category
+                    No songs available{" "}
+                    {status !== "all" ? "under this category " : ""}.
                   </div>
                 </div>
               )}
@@ -196,6 +226,7 @@ const SongsSection = ({
                   key={index}
                   index={index}
                   item={item}
+                  removeSong={removeSong}
                   status={status}
                 />
               ))}

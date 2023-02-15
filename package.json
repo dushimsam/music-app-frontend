@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "container": "docker run -p 3000:3000 dushsam/sociacle-client",
+    "container": "docker run -p 3000:3000 dushsam/musicapp",
     "export": "next build && next export"
   },
   "dependencies": {
@@ -34,7 +34,6 @@
     "react-hot-toast": "^2.4.0",
     "react-loading-skeleton": "^2.2.0",
     "react-redux": "^7.2.8",
-    "react-slideshow-with-pagination": "^1.0.2",
     "react-snackbar-alert": "^2.1.0",
     "reactjs-popup": "^2.0.5",
     "reactstrap": "^9.1.4",

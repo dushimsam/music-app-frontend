@@ -77,12 +77,12 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
         <div className="col-12 rounded" style={styles.header}>
           <div className="container">
             <div className="row justify-content-start">
-              <div className="col-5 pt-4">
+              <div className="col-12 pt-4">
                 <h2 className="text-light font-weight-bold">{`${item.type}`}</h2>
                 <p className="text-light">{`There are 100 songs under this category`}</p>
                 <Popup
                   trigger={
-                    <button className="btn-dark px-3 py-2 rounded">
+                    <button className="btn-dark px-md-3 py-md-2 rounded">
                       {" "}
                       EDIT DETAILS{" "}
                     </button>
@@ -112,8 +112,8 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
                 </Popup>
               </div>
             </div>
-            <div className="row justify-content-between pt-5">
-              <div className="col-4">
+            <div className="row justify-content-between pt-md-5 pt-2">
+              <div className="col-md-4 col-12">
                 <Popup
                   trigger={
                     <button

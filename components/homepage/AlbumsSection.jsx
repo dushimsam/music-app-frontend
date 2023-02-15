@@ -80,7 +80,7 @@ const AlbumSection = () => {
         <div className="row">
           {albums.map((card, index) =>
             card.id == "new" ? (
-              <div className="col-2">
+              <div className="col-md-2 col-4">
                 <Popup
                   trigger={
                     <div className={`${AlubmCardStyles.newAlbumCard}`}>
@@ -123,7 +123,7 @@ const AlbumSection = () => {
                 </Popup>
               </div>
             ) : (
-              <div className="col-2" key={index}>
+              <div className="col-md-2 col-4" key={index}>
                 <div onClick={() => Router.push("album/" + card.id)}>
                   <img 
                     src={card.cover_image_url}

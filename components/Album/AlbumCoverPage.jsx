@@ -5,7 +5,7 @@ import { AlbumService, SongService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
-
+import Styles from "../../styles/components/AlbumCover.module.scss"
 const styles = {
   header: {
     height: "400px",
@@ -15,14 +15,7 @@ const styles = {
   },
   categories: {
     marginTop: "-100px",
-  },
-  image: {
-    width: "15em",
-    height: "15em",
-  },
-  title: {
-    fontSize: "3em",
-  },
+  }
 };
 
 const AlbumCoverPage = ({item, setSongs, songs}) => {
@@ -102,18 +95,16 @@ const AlbumCoverPage = ({item, setSongs, songs}) => {
         <div className="col-12 rounded" style={styles.header}>
           <div className="container">
             <div className="row justify-content-start">
-              <div className="col-3 pt-4">
+              <div className="col-md-3 col-6 pt-4">
                 <img
                   src={item.cover_image_url}
                   alt="cover-image"
-                  className="img-thumbnail"
-                  style={styles.image}
+                  className={"img-thumbnail "+Styles.image}
                 />
               </div>
-              <div className="col-5 pt-4">
+              <div className="col-md-5 col-6 pt-md-4">
                 <h1
-                  className="text-light font-weight-bold mt-5"
-                  style={styles.title}
+                  className={"text-light font-weight-bold mt-5 "+Styles.title}
                 >{`${item.title}`}</h1>
                 <p className="text-light">{`${item.description}`}</p>
                 <Popup
@@ -152,7 +143,7 @@ const AlbumCoverPage = ({item, setSongs, songs}) => {
               </div>
             </div>
             <div className="row justify-content-between pt-5">
-              <div className="col-4">
+              <div className="col-md-4 col-12">
                 <Popup
                   trigger={
                     <button

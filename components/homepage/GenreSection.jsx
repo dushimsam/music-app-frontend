@@ -63,7 +63,7 @@ const GenreSection = () => {
       <div className="row justify-content-start">
         {genres.map((card, index) =>
           card.id == "new" ? (
-            <div className="col-2">
+            <div className="col-3">
               <Popup
                 trigger={
                   <div className={`${Styles.newGenreCard}`}>
@@ -104,11 +104,11 @@ const GenreSection = () => {
               </Popup>
             </div>
           ) : (
-            <div className="col-4 my-2" key={index}>
+            <div className="col-md-4 col-6 my-2" key={index}>
               <div className={`${Styles.card} py-2`}>
-                <span className="mr-5">{card.type}</span>
+                <span className="mr-md-5">{card.type}</span>
                 <button
-                  className={`btn p-3  ${Styles.cardBtn}`}
+                  className={`btn p-md-3 ml-2  ${Styles.cardBtn}`}
                   onClick={() => Router.push("genre/" + card.id)}
                 >
                   <svg

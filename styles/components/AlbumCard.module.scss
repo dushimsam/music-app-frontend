@@ -1,16 +1,48 @@
-
-.image{
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 3em;
-    box-shadow: 0 4px 2px -2px gray;
-    transition: all 0.2s ease-in-out;
-    &:hover{
-        transform: scale(1.05);
-    }
+.card {
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  height: 15em;
 }
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+.cardTitle{
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.cardText{
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #b3b3b3;
+}
+.cardImage {
+  position: relative;
+  width: 100%;
+  height: 11em;
+}
+
+.cardImage:before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9;
+  z-index: 1;
+}
+
+
 
 
 .newAlbumCard{
@@ -38,6 +70,15 @@
       width: 100%;
       height: auto;
       border-radius: 2em;
+    }
+    .cardImage {
+      position: relative;
+      width: 100%;
+      height: 4em;
+    }
+
+    .card{
+      height: 11em;
     }
     
     .newAlbumCard {

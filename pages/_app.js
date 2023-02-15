@@ -16,8 +16,6 @@ import {setAuthUser} from "../store/actions";
 import Auth from "../middlewares/auth";
 import AuthService from "../services/auth.service";
 
-<link rel="stylesheet" href="/css/video-react.css"/>
-
 NProgress.configure({showSpinner: true});
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

@@ -81,7 +81,7 @@ const AlbumSection = () => {
         <div className="row">
           {albums.map((card, index) =>
             card.id == "new" ? (
-              <div className="col-md-2 col-4">
+              <div className="col-md-3 col-4">
                 <Popup
                   trigger={
                     <div className={`${AlubmCardStyles.newAlbumCard}`}>
@@ -124,19 +124,21 @@ const AlbumSection = () => {
                 </Popup>
               </div>
             ) : (
-              <div className="col-md-2 col-4" key={index}>
-                <div onClick={() => Router.push("album/" + card.id)}>
+              <div className="col-md-4 col-5 my-2" key={index}>
+              <div className={`px-4 py-1 ${AlubmCardStyles.card}`}onClick={() => Router.push("album/" + card.id)}>
+                <div className={`${AlubmCardStyles.cardImage}`}>
                   <img 
                     src={card.cover_image_url}
                     alt="album cover"
-                    className={`img-fluid bg-cover ${AlubmCardStyles.image}`}
+                    className={`bg-cover ${AlubmCardStyles.image}`}
                   />
-                  <div className="card-body">
-                    <h6 className="card-title">{card.title}</h6>
-                    <p className="card-text"> {card.release_date} </p>
-                  </div>
+                </div>
+                <div className={AlubmCardStyles.cardBody}>
+                  <h6 className={`mt-2 ${AlubmCardStyles.cardTitle}`}>{card.title}</h6>
+                  <p className={AlubmCardStyles.cardText}> {card.release_date} </p>
                 </div>
               </div>
+            </div>
             )
           )}
         </div>

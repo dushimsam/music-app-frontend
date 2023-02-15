@@ -7,6 +7,8 @@ import { notifyError, notifySuccess } from "../../utils/alerts";
 import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
 import Styles from "../../styles/components/AlbumCover.module.scss"
+import DeleteConfirmation from "../Reusable/modals/DeleteConfirmationModal";
+import  Router  from "next/router";
 const styles = {
   header: {
     height: "400px",
@@ -93,6 +95,19 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
     setImgUrl(files[0]);
   };
 
+
+  const DeleteAlbum = async () => {
+    try {
+      setLoading(true);
+      const res = await AlbumService.delete(item.id);
+      notifySuccess(res.data.message);
+      Router.push("/home#album")
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container-fluid">
@@ -192,7 +207,9 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
                     />
                   )}
                 </Popup>
-                <button
+               
+                <Popup
+                  trigger={ <button
                   className="btn px-2 py-2"
                   style={{ backgroundColor: "white" }}
                 >
@@ -205,7 +222,14 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
                     <path fill="none" d="M0 0h24v24H0z" />
                     <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm2 2v10h12V10H6zm3 2h2v6H9v-6zm4 0h2v6h-2v-6zM7 5V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9z" />
                   </svg>
-                </button>{" "}
+                </button> }
+                  modal
+                  nested
+                >
+                  {(close) => (
+                     <DeleteConfirmation item={item} deleteItem={DeleteAlbum} loading={loading} setLoading={setLoading} title={"Are you sure you want to delete this album"} close={close} warningText={"All associated songs will be deleted as well !!!"}/>
+                  )}
+                </Popup>{" "}
               </div>
               <div className="col-4"></div>
             </div>

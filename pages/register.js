@@ -72,17 +72,10 @@ export default function Register() {
         setErrors((errors) => {
           return { ...errors, ...valid.errors.all() };
         });
-        let res = await AuthService.register(user);
-          sessionStorage.setItem(KEYS.LOCAL_STORAGE_TOKEN_KEY, res.data.token);
-          notifySuccess("You have successfully Registered.");
-          if (RouteService.getPrevRoute()) {
-            let link = RouteService.getPrevRoute();
-            RouteService.removePrevRoute();
-            await Router.push(link);
-          } else {
-            window.location.href = "/home";
-          }
-      }
+        const res = await AuthService.register(user);
+        notifySuccess(res.data.message);
+        await router.push("/");
+        }
     } catch (e) {
       setErrors({ ...initialErrors, ...e.response.data });
     }

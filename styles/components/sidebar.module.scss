@@ -5,7 +5,7 @@
 }
 
 .link:active {
-    background-color: #D9534F;
+    background-color: #a527bb;
     color: white;
 }
 
@@ -36,15 +36,6 @@
 
 
 
-/* .sellDiv{
- padding-left:3em;
- padding-right:0em;
- padding-top:0.5em;
- padding-bottom:0.5em;
- border-radius: 2em;
- border: 1px solid #D9534F;
- background-color:white;
-} */
 .col2 {
     position: relative;
     /* top:-10%; */
@@ -55,29 +46,6 @@
     top: 10%;
 }
 
-.sellText {
-    color: #D9534F;
-}
-
-.sellIcon {
-    color: #D9534F;
-
-}
-
-
-.colSell {
-    /* position: absolute;  */
-    bottom: 0;
-    /* padding-bottom: 3em; */
-    /* padding-right: 1em; */
-    margin-top: 5em;
-    cursor: pointer;
-}
-
-.divRow {
-
-    /* overflow-y: hidden; */
-}
 
 .mainLink {
     padding-top: 0.5em;
@@ -237,7 +205,7 @@
 
 .sidebarActiveLink {
     cursor: pointer;
-    background-color: rgb(255, 85, 85);
+    background-color: #a527bb;
     color: white !important;
 }
 

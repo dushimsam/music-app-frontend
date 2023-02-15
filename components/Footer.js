@@ -10,7 +10,6 @@ export const  Footer = () =>(
         </div>
         <div className="col-12 col-md-7 d-block d-md-flex">
             <div className={styles.link}>SERVICES</div>
-            <div className={styles.link}>PRODUCT</div>
             <div className={styles.link}>BENEFITS</div>
             <div className={styles.link}>GET IN TOUCH</div>
         </div>
@@ -22,7 +21,7 @@ export const  Footer = () =>(
     <div className={`row ${styles.divs}`}>
         <div className="col-12 col-md-9">
             <div className={styles.smallLink}>
-                2022 Music App by Samuel Dushimimana
+            {new Date().getFullYear()} Music App by Samuel Dushimimana
             </div>
         </div>
         <div className="col-12 col-md-3 d-block d-md-flex justify-content-end">

@@ -41,9 +41,9 @@ const SongFormInput = ({
 
   const [valid, setValid] = useState({
     title: !!status,
-    length: !!status,
-    album_id: addTo === "genre" ? !!status: 1,
-    genre_id: addTo === "album" ? !!status: 1
+    length: true,
+    album_id: addTo === "genre" ? !!status : 1,
+    genre_id: addTo === "album" ? !!status : 1,
   });
 
   useEffect(() => {
@@ -72,12 +72,12 @@ const SongFormInput = ({
           </div>
           <div className="form-group">
             <InputControl
+              type="number"
+              validations="required|integer|min:1"
               handleChangeV2={handleChangeV2("length")}
               value={values.length}
               label="Length"
-              type="number"
               min={1}
-              validations="required|integer"
             />
           </div>
 

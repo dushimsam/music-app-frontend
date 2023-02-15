@@ -7,12 +7,9 @@ import { useRouter } from "next/router";
 
 export default function AdminNavbar({setShowSidebar, sidebarState}) {
 
-    // const authUser = useSelector(state => state.authUser)
+    const authUser = useSelector(state => state.authUser)
 
-    const authUser = {
-        fullNames: "John Doe",
-        username: "doe",
-    }
+
     
     const router = useRouter();
 
@@ -42,11 +39,10 @@ export default function AdminNavbar({setShowSidebar, sidebarState}) {
             </div>
             <div className="d-flex align-items-center">
                 <div className="notifications cursor-pointer dropdown">
-                    {/* <NotificationContext on_nav_bar/> */}
                 </div>
                 <div className="dropdown">
                     <div className="account d-flex pl-4 align-items-center cursor-pointer"
-                         style={{fontSize: '14px', color: '#707070'}}
+                         style={{fontSize: '14px', color: '#707070', 'cursor':'pointer'}}
                          id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <img
                             width={30}
@@ -56,7 +52,7 @@ export default function AdminNavbar({setShowSidebar, sidebarState}) {
                             authUser.username}
                             alt={authUser.username}
                         />
-                        <span className="pl-3" style={{letterSpacing: '0.6px'}}>{authUser.fullNames}
+                        <span className="pl-3" style={{letterSpacing: '0.6px'}}>{authUser.full_names}
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 24 24"
@@ -73,7 +69,6 @@ export default function AdminNavbar({setShowSidebar, sidebarState}) {
                         </span>
                     </div>
                     <div className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                        {/* <div className="dropdown-divider"/> */}
                         <a className="dropdown-item" href="#" onClick={() => logOut()}>Log out</a>
                     </div>
                 </div>

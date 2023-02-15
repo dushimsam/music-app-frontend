@@ -30,19 +30,19 @@ const App = () => {
     return (
         <AdminDashboard isVerified={false}>
           <div className='container'>
-            <div className='row justify-content-center pt-2'>
+            <div className='row justify-content-center pt-2' id={"album"}>
                 <div className='col-12'>
                     <AlbumsSection/>
                 </div>
             </div>
 
-            <div className='row justify-content-center pt-5'>
+            <div className='row justify-content-center pt-5' id={"genre"}>
                 <div className='col-12'>
                     <GenreSection/>
                 </div>
             </div>
 
-            <div className='row justify-content-center pt-5'>
+            <div className='row justify-content-center pt-5' id={"featured"}>
                 <div className='col-12'>
                     <SongsSection status={"all"}  currPage={currPage} showTitle={true} totalSongs={totalSongs} setCurrPage={setCurrPage} songs={songs}/>
                 </div>

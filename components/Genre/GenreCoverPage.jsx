@@ -56,7 +56,7 @@ const GenreCoverPage = ({ item, setItem, setSongs, songs }) => {
         type: res.data.type,
       });
     } catch (e) {
-      notifyError(e.response.message);
+      // notifyError(e.response.message);
     }
   }, [item]);
 

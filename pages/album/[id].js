@@ -37,6 +37,7 @@ const AlbumPage = () => {
     try {
       const res = await AlbumService.get_songs_by_id_paginated(id, currPage);
       setSongs([...songs, ...res.data.data]);
+      console.log("songs",res.data.data)
       setTotalSongs(res.data.total);
     } catch (e) {
       // notifyError(e.response?.data?.message);
@@ -44,21 +45,21 @@ const AlbumPage = () => {
   };
 
   useEffect(() => {
-    fetchSongs();
-  }, [currPage]);
+   id && fetchSongs();
+  }, [currPage, id]);
 
   return (
     <AdminDashboard isVerified={false}>
       <div className="container-fluid">
         <div className="row">
           <div className="col-12">
-            <AlbumCoverPage item={item} />
+            <AlbumCoverPage item={item} setSongs={setSongs} songs={songs}/>
           </div>
         </div>
         <div className="row justify-content-center">
           <div className="col-10 pt-4">
             <SongsSection
-            item={item}
+               item={item}
               showTitle={false}
               currPage={currPage}
               status={"album"}

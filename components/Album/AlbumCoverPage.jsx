@@ -25,7 +25,7 @@ const styles = {
   },
 };
 
-const AlbumCoverPage = ({item}) => {
+const AlbumCoverPage = ({item, setSongs, songs}) => {
   const [values, setValues] = useState({
     title: "",
     length: 1,
@@ -46,6 +46,7 @@ const AlbumCoverPage = ({item}) => {
       details.length = parseInt(values.length);
       const res = await SongService.create(details);
       notifySuccess(res.data.message);
+      setSongs([...songs, res.data.model]);
     } catch (e) {
       notifyError(e.response?.data?.message);
     } finally {
@@ -69,7 +70,7 @@ const AlbumCoverPage = ({item}) => {
       });
       setDefaultFile(res.data.cover_image_url);
     } catch (err) {
-      notifyError(err.response.message);
+      // notifyError(err.response.message);
     }
   }, [item]);
 

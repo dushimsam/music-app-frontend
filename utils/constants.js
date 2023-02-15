@@ -1,6 +1,6 @@
 const NAME = 'Music App';
 export const APP_DETAILS = {
-    NAME: NAME, NAME_FULL: NAME, APP_LOGO: "/logo/logo.jpg", APP_LOGO_ICO: "/logo/logo.ico",
+    NAME: NAME, NAME_FULL: NAME, APP_LOGO: "/logo/logo.png", APP_LOGO_ICO: "/logo/logo.ico",
 }
 
 

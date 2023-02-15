@@ -2,10 +2,11 @@ import styles from "../styles/components/sidebar.module.scss"
 import Link from "next/link"
 import Router from "next/router";
 import { APP_DETAILS } from "../utils/constants";
+import { useEffect, useState } from "react";
 
 const navList = [ {
-    name: "Home",
-    href: "/",
+    name: "Album",
+    href: "/home/#album",
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="none" d="M0 0h24v24H0z"/>
@@ -17,7 +18,7 @@ const navList = [ {
 },
 {
     name: "Genre",
-    href: "/",
+    href: "/home/#genre",
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="none" d="M0 0h24v24H0z"/>
@@ -29,7 +30,7 @@ const navList = [ {
 },
 {
     name: "Featured Songs",
-    href: "/",
+    href: "/home/#featured",
     icon: (
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
             <path fill="none" d="M0 0h24v24H0z"/>
@@ -41,14 +42,20 @@ const navList = [ {
 }]
 
 export default function Sidebar() {
+     const [pathname,setPathName] = useState("/home");
 
+    useEffect(()=>{
+        const path = window.location.pathname;
+        const fragment = window.location.hash;
+        const secondPart = path + fragment; 
+    },[])
     return (
         <div className="bg-white vh-100 border-right pt-2 pb-4 pl-4">
              <Link href="/" passHref>
             <div className="cursor-pointer" >
                                 <img src={APP_DETAILS.APP_LOGO}
-                                height={30}
-                                width={30}
+                                height={50}
+                                width={50}
                                 alt="Logo ..."
                                 className="mr-2"
                             />
@@ -57,14 +64,14 @@ export default function Sidebar() {
         </Link>
             <hr/>
             <div className="dashboard my-3">
-                <Link href={''} passHref>
+                <Link href={'/home'} passHref>
                     <div
-                      style={{color: '#707070'}}  className={"d-flex px-3 py-2 rounded-sm align-items-center mr-3 " + (styles.sidebarActiveLink)}>
+                      style={{color: '#707070'}}  className={"d-flex px-3 py-2 rounded-sm align-items-center mr-3 " + (pathname === "/home" ? styles.sidebarActiveLink : styles.sidebarLink)}>
                         <div>
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18">
                                 <path fill="none" d="M0 0h24v24H0z"/>
                                 <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"
-                                      fill="rgba(108,117,125,1)"/>(Router.pathname === getDashboardLink(authUser) ? styles.sidebarActiveLink : styles.sidebarLink)
+                                      fill="rgba(108,117,125,1)"/>
                             </svg>
                         </div>
                         <div className="pl-4">
@@ -79,7 +86,7 @@ export default function Sidebar() {
                     navList.map((list, i) => (
                         <Link href={list.href} key={i} passHref>
                             <div
-                                className={"d-flex px-3 py-2 rounded-sm align-items-center mb-2 text-secondary mr-3 " +  (styles.sidebarActiveLink)}>
+                                className={"d-flex px-3 py-2 rounded-sm align-items-center mb-2 text-secondary mr-3 " +  (pathname === list.href ? styles.sidebarActiveLink : styles.sidebarLink)}>
                                 <div style={{marginTop: '-5px'}}>
                                     {list.icon}
                                 </div>

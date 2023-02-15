@@ -1,6 +1,7 @@
+//Import necessarry components
+
 import React, { useRef, useState, useEffect } from "react";
 import Validator from "validatorjs";
-import Multiselect from "multiselect-react-dropdown";
 
 import Head from "next/head";
 import Link from "next/link";
@@ -8,21 +9,23 @@ import Link from "next/link";
 import styles from "../styles/modules/auth.module.scss";
 import { AuthService } from "../services";
 
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { APP_DETAILS, KEYS } from "../utils/constants";
 import { notifyError, notifySuccess } from "../utils/alerts";
-import RouteService from "../middlewares/routing";
 import Auth from "../middlewares/auth";
 import ForbiddenPage from "../layouts/ForbiddenPage";
 
 export default function Register() {
+  // Initialize the useRouter hook to navigate between pages
   const router = useRouter();
 
+  // Initialize the useRef hook to obtain the value of input fields
   const fullNameContainer = useRef(null);
   const emailContainer = useRef(null);
   const userNameContainer = useRef(null);
   const passWordContainer = useRef(null);
 
+  // Set up initial errors as an empty object
   const initialErrors = {
     full_name: [],
     email: [],
@@ -30,10 +33,10 @@ export default function Register() {
     password: [],
   };
 
-  const [selectedClubs, setSelectedClubs] = useState([]);
-
+  // Set up a state variable to track validation errors
   const [errors, setErrors] = useState(initialErrors);
 
+  // Use the useEffect hook to check if the user is already authenticated
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,11 +47,16 @@ export default function Register() {
     fetchData().then();
   }, []);
 
+  // Define a helper function to extract the value of an input field
   const getValue = (container) => container.current.value;
 
+  // Define a function to handle form submission
   const submitForm = async (event) => {
     try {
+      // Prevent the default form submission behavior
       event.preventDefault();
+
+      // Retrieve the login and password values from the input fields
       const user = {
         email: getValue(emailContainer),
         username: getValue(userNameContainer),
@@ -56,6 +64,7 @@ export default function Register() {
         full_name: getValue(fullNameContainer),
       };
 
+      // Use the Validator library to validate the user object against certain rules
       let valid = new Validator(user, {
         email: "required|email",
         username: "required|string|min:3",
@@ -63,19 +72,24 @@ export default function Register() {
         full_name: "required|string|min:3",
       });
 
+      // If there are any validation errors, update the errors state variable
       if (valid.fails(undefined))
         return setErrors((errors) => {
           return { ...errors, ...valid.errors.all() };
         });
 
+      // If there are no validation errors, attempt to register the user
       if (valid.passes(undefined)) {
         setErrors((errors) => {
           return { ...errors, ...valid.errors.all() };
         });
+
         const res = await AuthService.register(user);
         notifySuccess(res.data.message);
+
+        // After registering the user, redirect them to the login page
         await router.push("/");
-        }
+      }
     } catch (e) {
       setErrors({ ...initialErrors, ...e.response.data });
     }

@@ -21,7 +21,8 @@ const ModalWrapper = ({
       <div className={`row justify-content-center ${styles.actions}`}>
         <div className="col-md-2 col-6 pl-md-3">
           <button
-            className="btn  ml-md-0 px-md-3 shadow btn-primary"
+            className="btn  ml-md-0 px-md-3 shadow "
+            style={{ backgroundColor: "#3643c7", color: "#fff" }}
             onClick={() => callFun()}
             disabled={!disable || loading}
           >

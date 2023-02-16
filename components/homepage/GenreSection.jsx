@@ -1,3 +1,4 @@
+// Import React hooks and components
 import Styles from "../../styles/components/GenreCard.module.scss";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
@@ -7,27 +8,15 @@ import { GenreService } from "../../services";
 import { notifyError, notifySuccess } from "../../utils/alerts";
 import Router from "next/router";
 
+// Functional Component to display genres with create genre form
 const GenreSection = () => {
+  // Set initial states for form inputs, form validation, loading state list of genres
   const [values, setValues] = useState({
     type: "",
   });
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [totalGenres, setTotalGenres] = useState(0);
-
-  const Create = async () => {
-    try {
-      setLoading(true);
-      const res = await GenreService.create(values);
-      notifySuccess(res.data.message);
-      setGenres([...genres, res.data.model]);
-    } catch (e) {
-      notifyError(e.response?.data?.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const [genres, setGenres] = useState([
     {
       id: "new",
@@ -39,6 +28,24 @@ const GenreSection = () => {
   const [currPage, setCurrPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
 
+  // Async function to create new genre
+  const Create = async () => {
+    try {
+      setLoading(true);
+      // Create new genre and get response
+      const res = await GenreService.create(values);
+
+      // Notify success and add new album to list
+      notifySuccess(res.data.message);
+      setGenres([...genres, res.data.model]);
+    } catch (e) {
+      notifyError(e.response?.data?.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Async function to fetch list of albums based on current page number
   const fetchGenres = async () => {
     try {
       const res = await GenreService.get_all_paginated(currPage);
@@ -49,10 +56,12 @@ const GenreSection = () => {
     }
   };
 
+   // Use effect hook to fetch list of albums on component mount or when current page changes
   useEffect(() => {
     fetchGenres();
   }, [currPage]);
 
+  // Return JSX with genre list and form inputs for creating new genre
   return (
     <div className="container">
       <div className="row justify-content-start">

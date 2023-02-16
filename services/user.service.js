@@ -3,14 +3,12 @@ import {HttpCommon as http} from "./http";
 
 class UsersService extends Services {
    
-    path = "song";
-
     get_all() {
-        return http.get(`${this.path}`);
+        return http.get(`${this.userPath}`);
     }
 
     get_by_id(user) {
-        return http.get(`/${this.path}/${user}`);
+        return http.get(`/${this.userPath}/${user}`);
     }
 }
 

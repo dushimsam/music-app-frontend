@@ -32,7 +32,7 @@ class GenreService extends Services {
     }
 
     get_songs(genre){
-        return http.get(`/${this.genrePath}}/${genre}/songs`);
+        return http.get(`/${this.genrePath}/${genre}/songs`);
     }
 }
 

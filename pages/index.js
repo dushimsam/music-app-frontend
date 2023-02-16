@@ -70,7 +70,7 @@ export default function Login() {
         // If a token is received, set it in the Auth utility and notify the user of successful login
         if (data.data.token) {
           Auth.setToken(data.data.token);
-          notifySuccess("Login successful");
+          notifySuccess("Logged in successfully");
 
           // If there is a previously stored route, navigate the user there
           if (RouteService.getPrevRoute()) {
@@ -87,7 +87,7 @@ export default function Login() {
       // Handle any errors that may occur during the login process
       if (e.response?.status === 400)
         return setErrors({ ...initialErrors, ...e.response.data });
-      if (e.response?.status === 404) notifyError(e.response.data.message);
+        notifyError(e.response?.data.message);
     }
   };
 

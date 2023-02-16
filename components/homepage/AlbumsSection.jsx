@@ -1,3 +1,4 @@
+// Import React hooks and components
 import React, { useEffect, useState } from "react";
 import AlubmCardStyles from "../../styles/components/AlbumCard.module.scss";
 import AlbumFormInput from "../forms/CreateAlbum";
@@ -8,8 +9,9 @@ import { notifyError, notifySuccess } from "../../utils/alerts";
 import Styles from "../../styles/components/GenreCard.module.scss";
 import Router from "next/router";
 
-
+// Functional Component to display albums with create album form
 const AlbumSection = () => {
+  // Set initial states for form inputs, form validation, loading state, image file and list of albums
   const [values, setValues] = useState({
     title: "",
     release_date: "",
@@ -27,48 +29,62 @@ const AlbumSection = () => {
     },
   ]);
 
+  // Async function to create new album
   const Create = async () => {
     try {
+      // Validate if image file is selected
       if(!imgFile) return notifyError("Please upload a cover image");
       setLoading(true);
+      // Create new album and get response
       let res = await AlbumService.create(values);
-      
+      // Upload cover image to Cloudinary and get response
       const cloudinaryService = new CloudinaryService(imgFile);
       const uploadRes = await cloudinaryService.upload();
+      // Update album with cover image and get response
       res = await AlbumService.uploadPicture(
         res.data.model.id,
         uploadRes.data.secure_url
       );
+      // Notify success and add new album to list
       notifySuccess(res.data.message);
       setAlbums([...albums, res.data.model]);
     } catch (e) {
+      // Notify error
       notifyError(e.response?.data?.message);
     } finally {
+      // Set loading state to false
       setLoading(false);
     }
   };
 
+  // Function to set selected image file to state
   const handleUploadPicture = (files) => {
     setImgFile(files[0]);
   };
 
+  // Set initial states for current page number and total number of albums
   const [currPage, setCurrPage] = useState(1);
   const [totalAlbums, setTotalAlbums] = useState(0);
 
+  // Async function to fetch list of albums based on current page number
   const fetchAlbums = async () => {
     try {
       const res = await AlbumService.get_all_paginated(currPage);
+      // Set total number of albums and update list of albums
       setTotalAlbums(res.data.total);
       setAlbums([...albums, ...res.data.data]);
     } catch (e) {
+      // Notify error
       notifyError(e.response?.data?.message);
     }
   };
 
+  // Use effect hook to fetch list of albums on component mount or when current page changes
   useEffect(() => {
     fetchAlbums();
   }, [currPage]);
 
+  // Return JSX with album list and form inputs for creating new album
 
   return (
     <div className="container">

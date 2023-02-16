@@ -2,6 +2,7 @@ import { Services } from "./services";
 import { HttpCommon as http } from "./http";
 
 class AlubmService extends Services {
+  
   get_all() {
     return http.get(`/${this.albumPath}`);
   }
@@ -10,7 +11,6 @@ class AlubmService extends Services {
     return http.get(`/${this.albumPath}/paginated?page=${page}`);
   }
 
-
   get_songs_by_id_paginated(album, page = 1){
     return http.get(`/${this.albumPath}/${album}/songs?page=${page}`);
   }
@@ -18,7 +18,6 @@ class AlubmService extends Services {
   get_by_id(album) {
     return http.get(`/${this.albumPath}/${album}`);
   }
-
   
 
   get(album) {

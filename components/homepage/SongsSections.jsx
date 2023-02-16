@@ -1,3 +1,4 @@
+// Import React hooks and components
 import { useEffect, useState } from "react";
 import { SongService } from "../../services";
 import styles from "../../styles/components/SongCard.module.scss";
@@ -8,8 +9,8 @@ import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import SongFormInput from "../forms/CreateSong";
 import DeleteConfirmation from "../Reusable/modals/DeleteConfirmationModal";
 
-
 const SongCard = ({ status, song, index, item, removeSong }) => {
+  // State variables to hold the current song and form input values
   const [currSong, setCurrSong] = useState({
     title: "",
     length: 1,
@@ -23,52 +24,65 @@ const SongCard = ({ status, song, index, item, removeSong }) => {
     genre_id: "",
   });
 
+  // State variables to track form validity and loading state
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Update the state variables when the song prop changes
   useEffect(() => {
     setCurrSong(song);
     setValues({
       title: song.title,
       length: song.length,
-      album_id: status === "album" ? item.id : song.album.id,
-      genre_id: status === "genre" ? item.id : song.genre.id,
+      album_id: status === "album" ? item.id : song.album?.id,
+      genre_id: status === "genre" ? item.id : song.genre?.id,
     });
   }, [song]);
 
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [loading, setLoading] = useState(false);
-
+  // Function to update the song
   const Update = async () => {
     try {
       let details = { ...values };
 
+      // Convert album_id, genre_id, and length to integers
       details.album_id = parseInt(details.album_id);
       details.genre_id = parseInt(details.genre_id);
       details.length = parseInt(values.length);
 
+      // Set loading state to true and send update request to API
       setLoading(true);
       const res = await SongService.update(currSong.id, details);
       notifySuccess(res.data.message);
       setCurrSong(res.data.model);
-
     } catch (e) {
+      // If update request fails, notify user of error
       notifyError(e.response?.data?.message);
     } finally {
+      // Set loading state to false
       setLoading(false);
     }
   };
 
+  // Function to delete the song
   const DeleteSong = async () => {
     try {
+      // Set loading state to true and send delete request to API
       setLoading(true);
       const res = await SongService.delete(currSong.id);
+
+      // If delete request is successful, notify user and remove song from list
       notifySuccess(res.data.message);
-      removeSong(currSong)
+      removeSong(currSong);
     } catch (e) {
+      // If delete request fails, notify user of error
       notifyError(e.response?.data?.message);
     } finally {
+      // Set loading state to false
       setLoading(false);
     }
   };
-
+  
+  // JSX to render the song card
   return (
     <tr className={`${styles.card}`}>
       <td>{index + 1}</td>
@@ -88,14 +102,15 @@ const SongCard = ({ status, song, index, item, removeSong }) => {
           </svg>
         </button>
       </td>
+    
       <td>{currSong.title}</td>
       {status === "all" || status === "genre" ? (
-        <td>{currSong.album.title}</td>
+        <td>{currSong.album?.title}</td>
       ) : (
         <></>
       )}
       {status === "all" || status === "album" ? (
-        <td>{currSong.genre.type}</td>
+        <td>{currSong.genre?.type}</td>
       ) : (
         <></>
       )}
@@ -140,25 +155,32 @@ const SongCard = ({ status, song, index, item, removeSong }) => {
           )}
         </Popup>
         <Popup
-                  trigger={ 
-        <button className="btn">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width="24"
-            height="24"
-          >
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm3-3V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9zm0 8v6h2v-6H9zm4 0v6h2v-6h-2z" />
-          </svg>
-        </button>}
-                  modal
-                  nested
-                >
-                  {(close) => (
-                     <DeleteConfirmation deleteItem={DeleteSong} loading={loading} setLoading={setLoading} title={"Are you sure you want to delete this song"} close={close}/>
-                  )}
-                </Popup>{" "}
+          trigger={
+            <button className="btn">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                width="24"
+                height="24"
+              >
+                <path fill="none" d="M0 0h24v24H0z" />
+                <path d="M4 8h16v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V8zm3-3V3a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v2h5v2H2V5h5zm2-1v1h6V4H9zm0 8v6h2v-6H9zm4 0v6h2v-6h-2z" />
+              </svg>
+            </button>
+          }
+          modal
+          nested
+        >
+          {(close) => (
+            <DeleteConfirmation
+              deleteItem={DeleteSong}
+              loading={loading}
+              setLoading={setLoading}
+              title={"Are you sure you want to delete this song"}
+              close={close}
+            />
+          )}
+        </Popup>{" "}
       </td>
     </tr>
   );
@@ -173,11 +195,10 @@ const SongsSection = ({
   songs,
   status,
 }) => {
-
-  const removeSong = (item) =>{
-    const newSongs = songs.filter(song => song.id !== item.id)
-    setSongs(newSongs)
-  }
+  const removeSong = (item) => {
+    const newSongs = songs.filter((song) => song.id !== item.id);
+    setSongs(newSongs);
+  };
   return (
     <div className="container-fluid">
       {showTitle && (

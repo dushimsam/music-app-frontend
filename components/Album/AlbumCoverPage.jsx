@@ -1,4 +1,6 @@
+// Import React hooks and components
 import { useState, useEffect } from "react";
+import  Router  from "next/router";
 import Popup from "reactjs-popup";
 import ModalWrapper from "../../components/Reusable/modals/ModalWrapper";
 import { AlbumService, SongService } from "../../services";
@@ -8,7 +10,9 @@ import AlbumFormInput from "../forms/CreateAlbum";
 import SongFormInput from "../forms/CreateSong";
 import Styles from "../../styles/components/AlbumCover.module.scss"
 import DeleteConfirmation from "../Reusable/modals/DeleteConfirmationModal";
-import  Router  from "next/router";
+
+
+// Styles object for header and categories
 const styles = {
   header: {
     height: "400px",
@@ -21,18 +25,21 @@ const styles = {
   }
 };
 
+// Functional component for Album Cover Page
 const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
+  
+  // State for form values, form validity, loading status, default file, and image URL
   const [values, setValues] = useState({
     title: "",
     length: 1,
     genre_id: "",
   });
-
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
   const [defaultFile, setDefaultFile] = useState("");
   const [imgUrl, setImgUrl] = useState(null);
 
+  // Function to create a song
   const Create = async () => {
     try {
       setLoading(true);
@@ -50,6 +57,7 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
     }
   };
 
+  // State for album values and function to fetch album by id
   const [albumValues, setAlbumValues] = useState({
     title: item.title,
     description: item.description,
@@ -70,6 +78,7 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
     }
   }, [item]);
 
+  // Function to update album and upload cover image to Cloudinary
   const UpdateAlbum = async () => {
     try {
       setLoading(true);
@@ -91,11 +100,12 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
     }
   };
 
+  // Function to handle picture upload and set image URL
   const handleUploadPicture = (files) => {
     setImgUrl(files[0]);
   };
 
-
+  // Function to delete an album
   const DeleteAlbum = async () => {
     try {
       setLoading(true);

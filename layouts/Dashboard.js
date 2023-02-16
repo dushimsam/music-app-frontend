@@ -1,20 +1,24 @@
+// Import React Hooks with the components
+import React, {Children, useEffect, useState} from "react";
 import Sidebar from "../components/Sidebar";
 import AdminNavbar from "../components/AdminNavbar";
-// import RouteProtector from "../../middlewares/RouteProtector";
-import React, {Children, useEffect, useState} from "react";
 import Footer from "../components/Footer";
 import RouteProtector from "../middlewares/routeProtector";
 
 
 const ContentCover = ({children}) => {
+    // Define state variables showSidebar and setShowSidebar
     const [showSidebar, setShowSidebar] = useState(true)
 
+    // Use the useEffect hook to run a function only once on mount of the page
     useEffect(() => {
+        // If the window width is less than 776 pixels, set showSidebar to false
         if (window.innerWidth < 776) {
             setShowSidebar(false)
         }
     }, [])
 
+    // Render the component with two columns, one for the Sidebar and one for the main content
     return (
         <div className="row mx-0 page min-vh-100">
             <div
@@ -70,6 +74,7 @@ const ContentCover = ({children}) => {
 }
 
 export default function AdminDashboard({children, isVerified}) {
+    // Render the ContentCover component with the children passed as props
     return (
         isVerified ?
             <ContentCover children={children}/> :<RouteProtector children={<ContentCover children={children}/>}/>

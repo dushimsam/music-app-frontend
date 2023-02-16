@@ -94,7 +94,6 @@ const AlbumSection = () => {
         </div>
       </div>
       <div className="row justify-content-center">
-        <div className="row">
           {albums.map((card, index) =>
             card.id == "new" ? (
               <div className="col-md-3 col-4">
@@ -144,6 +143,7 @@ const AlbumSection = () => {
               <div className={`px-4 py-1 ${AlubmCardStyles.card}`}onClick={() => Router.push("album/" + card.id)}>
                 <div className={`${AlubmCardStyles.cardImage}`}>
                   <img 
+                    style={{width:"10em", height:"10em"}}
                     src={card.cover_image_url}
                     alt="album cover"
                     className={`bg-cover ${AlubmCardStyles.image}`}
@@ -157,7 +157,6 @@ const AlbumSection = () => {
             </div>
             )
           )}
-        </div>
       </div>
       {albums.length < totalAlbums && (
         <div className="row justify-content-center">

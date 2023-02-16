@@ -3,7 +3,7 @@ import axios from "axios";
 import {KEYS} from "../utils/constants";
 
 // Declaring domain variable
-export const domain = "http://127.0.0.1:8000/";
+export const domain = "http://localhost:8000/";
 
 // Checking if there's a token in localStorage, assigning it to the token variable
 let token = "";

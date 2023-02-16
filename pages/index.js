@@ -144,7 +144,7 @@ export default function Login() {
           >
             <h1 className="pb-4 font-weight-bolder">Hello, Friend !</h1>
             <p className="font-weight-light">
-              Enter your personal details to start <br /> journey with us
+              Enter your credentials to start <br /> journey with us
             </p>
             <Link href={"/register"}>
               <button className="btn btn-side border border-white text-white px-5 py-2 my-5 rounded-pill">

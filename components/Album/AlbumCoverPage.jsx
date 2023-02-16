@@ -83,14 +83,15 @@ const AlbumCoverPage = ({item, setSongs, songs, setItem}) => {
     try {
       setLoading(true);
       let update_details = {...albumValues};
+      let res;
       if (imgUrl) {
         const cloudinaryService = new CloudinaryService(imgUrl);
         const uploadRes = await cloudinaryService.upload();
         update_details.cover_image_url = uploadRes.data.secure_url;
       }else{
-        albumValues.cover_image_url = defaultFile;
+        update_details.cover_image_url = defaultFile;
       }
-      const res = await AlbumService.update(item.id, update_details);
+      res = await AlbumService.update(item.id, update_details);
       notifySuccess(res.data.message);
       setItem(res.data.model)
     } catch (e) {

@@ -1,4 +1,4 @@
-# music-app-frontend
+# Music-App frontend
 
 This is the frontend of the music app built with NextJs & Laravel on the backend.
 You can find the corresponding backend  [here](https://github.com/dushimsam/music-app-backend) 
